@@ -1,0 +1,46 @@
+@keyframes rotation {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+.container{
+    width: 75px;
+    height: 75px;
+    background-color: rgb(228, 28, 28);
+    position: relative;
+    border-radius: 100%;
+    border: 30px solid white;
+    transform: rotate(20deg);
+    animation-name: rotation;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    
+}
+
+.container::after{
+    display: block;
+    content: " ";
+    width: 20px;
+    height: 20px;
+    position :absolute;
+    top: 0rem;
+    left: 1.1rem;
+    border-radius: 20px;
+
+    background-color: var(--blueMain);
+}
+.container::before{
+    display: block;
+    content: " ";
+    width: 20px;
+    height: 20px;
+    position :absolute;
+    bottom: 0rem;
+    right:  1.1rem;
+    border-radius: 20px;
+    background-color: var(--blueMain);
+}
