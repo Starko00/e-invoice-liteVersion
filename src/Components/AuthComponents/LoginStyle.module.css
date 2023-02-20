@@ -1,69 +1,99 @@
 .containerFormHolder {
   display: flex;
-  background-color: var(--cardBackground);
-  max-width: 600px;
-  box-sizing: border-box;
+  background-color: white;
+  min-width: 500px;
+
+box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.105);  box-sizing: border-box;
   flex-direction: column;
-  aspect-ratio: 13/12;
+  padding: 2.5rem;
   border: 0.2px solid var(--cardBorderColor);
   border-radius: var(--cardRadiusOuter);
   align-items: center;
   justify-content: center;
 }
 
-.formMain{
-    display: flex;
-    flex-direction: column;
-    gap: var(--flexGap);
-    align-items: center;
-    color: var(--secondaryFontColor);
-    justify-content: center;
+.formMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flexGap);
+  align-items: center;
+  color: var(--secondaryFontColor);
+  justify-content: center;
 }
-.formMain h1{
-    width: 100%;
-    text-align: left;
-    font-size: 2.2rem;
+.formMain h1 {
+  width: 100%;
+  text-align: center;
+  font-size: 2.2rem;
 }
-.inputHolder{
-    display: flex;
-    position: relative;
-    flex-direction: column;
+.inputHolder {
+  display: flex;
+  position: relative;
+  flex-direction: column;
 }
-.inputHolder input{
-    box-sizing: border-box;
-    padding: 1rem;
-    width: 350px;
-    border: none;
-    border: 1px solid var(--cardBorderColor);
-    height: 3rem;
-    border-radius: 6px;
-    font-size: 1.3rem;
-    color: var(--secondaryFontColor);
+.inputHolder input {
+  box-sizing: border-box;
+  padding: 1rem;
+  width: 350px;
+  border: none;
+  border: 1px solid var(--cardBorderColor);
+  height: 3rem;
+  border-radius: 6px;
+  font-size: 1.3rem;
+  color: var(--secondaryFontColor);
 }
-.inputHolder input:focus{
-    outline-color: var(--blueMain);
+.inputHolder input:focus {
+  outline-color: var(--blueMain);
 }
-.formMain button{
-    width: 100%;
-    height: 3rem;
-    background-color: var(--blueMain);
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font: inherit;
+.formMain button {
+  width: 100%;
+  height: 3rem;
+  background-color: var(--blueMain);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font: inherit;
 }
-.inputHolder label{
-    color: var(--secondaryFontColor);
-    font-size: 1.2rem;
+.inputHolder label {
+  color: var(--secondaryFontColor);
+  font-size: 1rem;
+  position: absolute;
+  top: -0.75rem;
+  transition: all 0.1s;
+  left: 0.5rem;
+  background-color: var(--cardBackground);
 }
-.formMain button:hover{
-    cursor: pointer;
-    scale: 0.97;
+.formMain button:hover {
+  cursor: pointer;
+  scale: 0.97;
 }
-.warrning{
-    line-height: 1rem;
-    font-size: 1rem;
-    color: var(--blueMain);
-    padding: 0rem;
-    margin: 0rem;
+.warrning {
+  line-height: 1rem;
+  font-size: 1rem;
+  color: var(--blueMain);
+  padding: 0rem;
+  margin: 0rem;
+}
+
+/* Animations */
+
+.inputHolder input:placeholder-shown + label {
+  top: 0.5rem;
+  font-size: 1.2rem;
+  background-color: white;
+  left: 0.5rem;
+}
+.inputHolder input:focus + label {
+  top: -0.75rem;
+  left: 0.5rem;
+  font-size: 1rem;
+}
+
+@media (max-width:1300px){
+    .containerFormHolder{
+        min-width: 300px;
+        min-height: 500px;
+    }
+    .inputHolder input{
+        width: 270px;
+    }
 }

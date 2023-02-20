@@ -1,21 +1,32 @@
-.container{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    padding: 3rem;
-    gap: 3rem;
-    flex-direction: row-reverse;
-    background-color:var(--blueMain);
-    justify-content: flex-end;
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding: 3rem;
+  gap: 3rem;
+  flex-direction: row-reverse;
+  background-color: var(--cardBackground);
+  justify-content: flex-end;
 }
-.adsContainer{
-    background-color: var(--cardBackground);
-    width: 100%;
-    background-image: url('https://e-invoices.online/program-za-e-fakture-na-vebu/images/DB6GHJU7BVCF3ISQ445BEVAJVA.webp');
-    border-radius: var(--cardRadiusOuter);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
+.adsContainer {
+  background-color: var(--cardBackground);
+  width: 100%;
+  background-image: url("https://e-invoices.online/program-za-e-fakture-na-vebu/images/DB6GHJU7BVCF3ISQ445BEVAJVA.webp");
+  border-radius: var(--cardRadiusOuter);
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.105);  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+@media (max-width:1300px){
+    .adsContainer{
+        display: none;
+    }
+    .container{
+        align-items: center;
+        justify-content: center;
+    }
 }

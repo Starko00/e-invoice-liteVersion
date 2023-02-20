@@ -1,0 +1,25 @@
+.navigationHolder{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    justify-content:flex-end;
+    
+    color: var(--fontMainColor);
+}
+.userBasicInfo{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.organizationInfo{
+    font-size: 1rem;
+    font-weight: 1rem;
+    color: var(--fontColorTransparent);
+}
+.userPictureHolder{
+    
+    min-width: 50px;
+    min-height: 50px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 1000rem;
+}

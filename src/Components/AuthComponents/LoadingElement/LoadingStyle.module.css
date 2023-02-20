@@ -1,46 +1,54 @@
-@keyframes rotation {
-    from{
-        transform: rotate(0deg);
-    }
-    to{
-        transform: rotate(360deg);
-    }
-}
-.container{
-    width: 75px;
-    height: 75px;
-    background-color: rgb(228, 28, 28);
-    position: relative;
-    border-radius: 100%;
-    border: 30px solid white;
-    transform: rotate(20deg);
-    animation-name: rotation;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
+.box {
+    width: 300px;
+    height: 300px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
 }
-
-.container::after{
-    display: block;
-    content: " ";
-    width: 20px;
-    height: 20px;
-    position :absolute;
-    top: 0rem;
-    left: 1.1rem;
-    border-radius: 20px;
-
-    background-color: var(--blueMain);
+.container {
+    height: 15px;
+    width: 105px;
+    display: flex;
+    position: relative;
 }
-.container::before{
-    display: block;
-    content: " ";
-    width: 20px;
-    height: 20px;
-    position :absolute;
-    bottom: 0rem;
-    right:  1.1rem;
-    border-radius: 20px;
+.container .circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
     background-color: var(--blueMain);
+    animation: move 500ms linear 0ms infinite;
+    margin-right: 30px;
+}
+.container .circle:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: grow 500ms linear 0ms infinite;
+}
+.container .circle:last-child {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 0;
+    animation: grow 500ms linear 0s infinite reverse;
+}
+@keyframes grow {
+    from {
+        transform: scale(0, 0);
+        opacity: 0;
+   }
+    to {
+        transform: scale(1, 1);
+        opacity: 1;
+   }
+}
+@keyframes move {
+    from {
+        transform: translateX(0px);
+   }
+    to {
+        transform: translateX(45px);
+   }
 }

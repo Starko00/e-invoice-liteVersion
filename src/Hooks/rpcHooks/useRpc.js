@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SHA1 from "../../utils/hashFunction";
 import reverString from "../../utils/reverseString";
+import { useNavigate } from "react-router-dom";
+
 function useRpc() {
   const _id = Math.floor(Math.random() * 1000000); // gives a random id number to the request // not necessary
-
+const navigate = useNavigate()
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -31,7 +33,7 @@ function useRpc() {
           
           setData(res.data.error)
         } else{
-          window.location.href = "@";
+          navigate('/home')
         }
       });
   }, []); // Cheks if the active session exists

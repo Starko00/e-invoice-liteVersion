@@ -1,7 +1,10 @@
 import axios from "axios"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
+import { UserContext } from "../App"
+import { MainNavigation } from "../Components/AuthComponents/NavigationComponent/MainNavigation"
 
 export const HomePage = ()=>{
+  const [user,setUser] = useContext(UserContext)
     useEffect(()=>{
         axios
         .post(
@@ -16,8 +19,14 @@ export const HomePage = ()=>{
           {
             withCredentials: true,
           }
-        ).then(res=>console.log(res))
+        ).then(res=> setUser(res.data.result))
         
-    })
-    return <div>Home page</div>
+    },[])
+
+    console.log(user)
+    
+    return <div>
+      <MainNavigation/>
+    
+      Home page</div>
 }
