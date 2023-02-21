@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
 import { LoadingAnimation } from "./LoadingElement/LoadingAnimation";
 import { useNavigate } from "react-router-dom";
-
+import logo from "./../../resources/logo.svg"
 export const LoginForm = () => {
   const style = LoginStyle;
   const [userName, setUserName] = useState("");
@@ -60,6 +60,7 @@ export const LoginForm = () => {
           }}
           className={style.formMain}
         >
+          <img src={logo}/>
           <h1>Welcome back</h1>
           <div className={style.inputHolder}>
             <input
