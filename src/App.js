@@ -8,7 +8,7 @@ import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 export const UserContext = createContext();
 function App() {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState([""]);
 
   return (
     <div className="App">

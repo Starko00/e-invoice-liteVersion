@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function useRpc() {
   const _id = Math.floor(Math.random() * 1000000); // gives a random id number to the request // not necessary
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,20 +29,18 @@ const navigate = useNavigate()
       )
       .then((res) => {
         console.log(res.data);
-        if(res.data?.error){
-          
-          setData(res.data.error)
-        } else{
-          navigate('/home')
+        if (res.data?.error) {
+          setData(res.data.error);
+        } else {
+          navigate("/home");
         }
       });
   }, []); // Cheks if the active session exists
   useEffect(() => {
     if (data?.result) {
-      
       clientProve(_id, userName, password, data.result); //Checks if the password is correct only activates if challange is present
     }
-    setRequest(false)
+    setRequest(false);
     setLoading(false); //Puts the finnal loading to false // acts as failsafe in case of experimental or connected requests
   }, [request]);
 
@@ -65,8 +63,10 @@ const navigate = useNavigate()
         setData(res.data);
         setRequest(true);
       })
-      .catch((err) => setError(err)).finally(()=>{console.log(data,"User auth")})
-      
+      .catch((err) => setError(err))
+      .finally(() => {
+        console.log(data, "User auth");
+      });
   }; // Client login funtion exported to the front, sends an RPC request and changes the state of the data prop, the state of the loading is set not to change as this function is connected to the validation
   const clientProve = (_id, userName, password, challange) => {
     axios
@@ -93,8 +93,17 @@ const navigate = useNavigate()
         setLoading(false);
       });
   }; // Function that thakes challange and proves the matched identity and the password
-
-  return { data, loading, error, clientLogin }; // returns necessary states, like data loading and error, others are functions
+  const changeOrg = (organizationId) => {
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Auth.ChangeOrganization",
+        params: { orgid: organizationId },
+      })
+      .then((res) => window.location.reload(true));
+  };
+  
+  return { data, loading, error, clientLogin, changeOrg }; // returns necessary states, like data loading and error, others are functions
 }
 
 export default useRpc;

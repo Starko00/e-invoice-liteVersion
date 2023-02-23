@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../App";
+import { LoadingAnimation } from "../Components/AuthComponents/LoadingElement/LoadingAnimation";
 import { MainNavigation } from "../Components/AuthComponents/NavigationComponent/MainNavigation";
 
 export const HomePage = () => {
@@ -21,16 +22,19 @@ export const HomePage = () => {
       )
       .then((res) => {
         setUser(res.data.result);
-        console.log(res.data.result,"RESU");
+    
       });
+      console.log(user)
   }, []);
 
-  console.log(user);
+ 
 
   return (
     <div>
-      <MainNavigation />
-      Home page
+     <MainNavigation />
+      
+     
     </div>
   );
 };
+
