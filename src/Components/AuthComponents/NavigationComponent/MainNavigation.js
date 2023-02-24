@@ -10,7 +10,8 @@ export const MainNavigation = () => {
   const style = MainNavigationStyle;
   const { changeOrg } = useRpc();
   const [user, setUser] = useContext(UserContext);
-
+  
+  
   return (
     <div className={style.navigationHolder}>
       <div className={style.logoHolder}>
@@ -32,7 +33,7 @@ export const MainNavigation = () => {
             </div>
 
             <div className={style.organizationsHolder}>
-              {user.AuthorizedOrganizations?.map((org) => {
+              {user?.AuthorizedOrganizations?.map((org) => {
                 return (
                   <p
                     key={org.Id}

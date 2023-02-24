@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { UserContext } from "../App";
 import { LoadingAnimation } from "../Components/AuthComponents/LoadingElement/LoadingAnimation";
 import { MainNavigation } from "../Components/AuthComponents/NavigationComponent/MainNavigation";
+import { NavigationInner } from "../Components/AuthComponents/NavigationInner/NavigationIneer";
 
 export const HomePage = () => {
   const [user, setUser] = useContext(UserContext);
@@ -32,8 +34,8 @@ export const HomePage = () => {
   return (
     <div>
      <MainNavigation />
-      
-     
+      <NavigationInner/>
+     <Outlet/>
     </div>
   );
 };

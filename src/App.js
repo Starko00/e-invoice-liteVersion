@@ -18,7 +18,11 @@ function App() {
           <Routes>
             <Route exacth path="/" element={<LoginPage />} />
 
-            <Route exacth path="/home" element={<HomePage />}></Route>
+            <Route exacth path="/home" element={<HomePage/>}>
+
+              
+              <Route path="dashboard" element={<div>ASDAKLSDALDKJAHSLDKJHA</div>} />
+            </Route>
           </Routes>
         </Router>
       </UserContext.Provider>
