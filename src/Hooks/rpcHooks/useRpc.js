@@ -101,7 +101,7 @@ function useRpc() {
         params: { orgid: organizationId },
       })
       .then((res) => window.location.reload(true));
-  };
+  }; //Changes the organization, if the session is valid changes the user org to the provided organization ID
   
   return { data, loading, error, clientLogin, changeOrg }; // returns necessary states, like data loading and error, others are functions
 }
