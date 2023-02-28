@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import MainNavigationStyle from "./MainNavigationStyle.module.css";
 import { UserContext } from "../../../App";
 import logo from "./../../../resources/logo.svg";
@@ -8,9 +8,12 @@ import axios from "axios";
 import useRpc from "../../../Hooks/rpcHooks/useRpc";
 export const MainNavigation = () => {
   const style = MainNavigationStyle;
-  const { changeOrg } = useRpc();
+  const { changeOrg,testingFunction } = useRpc();
   const [user, setUser] = useContext(UserContext);
   
+  useEffect(()=>{
+    testingFunction()
+  },[])
   
   return (
     <div className={style.navigationHolder}>

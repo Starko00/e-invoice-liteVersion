@@ -14,7 +14,7 @@ export const NavigationInner = () => {
     <div className={style.container}>
       <div className={style.left}>
         <div className={style.menuItemHolder} onClick={()=>{
-            navigate('dashboard')
+            navigate('/home')
         }}>
           <div className={style.menuIconHolder}><BsFillHouseFill className={style.icon}/> </div> <p>Home</p>
         </div>

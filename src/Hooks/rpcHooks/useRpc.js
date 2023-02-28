@@ -102,8 +102,18 @@ function useRpc() {
       })
       .then((res) => window.location.reload(true));
   }; //Changes the organization, if the session is valid changes the user org to the provided organization ID
-  
-  return { data, loading, error, clientLogin, changeOrg }; // returns necessary states, like data loading and error, others are functions
+
+  const testingFunction = () => {
+    axios.post("/json.rpc", {
+      jsonrpc: "2.0",
+      method: "Data.GetEntityData",
+      params: {
+        entity: "1a7ca589-9d77-4a7f-a0dc-d116c5878187",
+      },
+      id:_id
+    }).then(res=>console.log(res,"Test function response"));
+  };
+  return { data, loading, error, clientLogin, changeOrg,testingFunction}; // returns necessary states, like data loading and error, others are functions
 }
 
 export default useRpc;
