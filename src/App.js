@@ -37,8 +37,8 @@ function App() {
       <UserContext.Provider value={[user, setUser]}>
         <Router>
           <Routes>
-            <Route path="" element={<LoginPage />} />
-            <Route exacth path="home" element={<HomePage />}>
+            <Route path="/" element={<LoginPage />} />
+            <Route  path="/home" element={<HomePage />}>
               <Route index element={<InvoiceEditor />} />
             </Route>
             <Route path="*" element={<div>404 REACT</div>}/>

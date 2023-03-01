@@ -81,10 +81,12 @@
 @keyframes miniMenuOpen {
   from{
     height: 0rem;
+    opacity: 0.1;
     
   }
   to{
     height:100px;
+    opacity: 1;
   }
 }
 .primaryOrganizationHolder:hover{
@@ -93,12 +95,12 @@
 .primaryOrganizationHolder:hover + .organizationsHolder {
   cursor: pointer;
   display: flex;
-  animation: miniMenuOpen 0.3s;
+  animation: miniMenuOpen 0.2s;
   
 }
 .organizationsHolder:hover {
   
- animation: miniMenuOpen 0.3s;
+ animation: miniMenuOpen 0.2s;
   display: flex;
 }
 .organizationsHolder p:hover {
