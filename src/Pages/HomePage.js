@@ -24,19 +24,14 @@ export const HomePage = () => {
       )
       .then((res) => {
         setUser(res.data.result);
-    
       });
-      console.log(user)
   }, []);
-
- 
 
   return (
     <div>
-     <MainNavigation />
-      <NavigationInner/>
-     <Outlet/>
+      <MainNavigation />
+      <NavigationInner />
+      <Outlet />
     </div>
   );
 };
-

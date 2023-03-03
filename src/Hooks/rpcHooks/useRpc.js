@@ -28,7 +28,6 @@ function useRpc() {
         }
       )
       .then((res) => {
-        console.log(res.data);
         if (res.data?.error) {
           setData(res.data.error);
         } else {
@@ -110,10 +109,84 @@ function useRpc() {
       params: {
         entity: "1a7ca589-9d77-4a7f-a0dc-d116c5878187",
       },
-      id:_id
-    }).then(res=>console.log(res,"Test function response"));
+      id: _id,
+    });
   };
-  return { data, loading, error, clientLogin, changeOrg,testingFunction}; // returns necessary states, like data loading and error, others are functions
+
+  const initNewInvoice = () => {
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Extension.Execute",
+        params: {
+          extension: "EUeInvoices.GetInitializedNewInvoice",
+          args: {
+            Partial: "UIEdit",
+          },
+        },
+        id: _id,
+      })
+      .then((res) => {
+        if (res.data?.result.Result) {
+          setData(res.data.result.Result);
+        } else {
+          setData({ error: "Cant get the invoice object" });
+        }
+      });
+  };
+  const getInvoOwnerInfo = () => {
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Data.GetEntityData",
+        params: {
+          entity: "EU_AOrg",
+          skip: null,
+          take: null,
+        },
+        id: _id,
+      })
+      .then((res) => {
+        setData(res.data);
+      });
+  }; // Gets the information of the current inovice owner
+
+  const saveInvoice = (invoice) => {
+    console.log( {args: {
+      Partial: "UIEdit",
+      invoice,
+    },})
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Extension.Execute",
+        params: {
+          extension: "EUeInvoices.SaveInvoice",
+
+          args: {
+            Partial: "UIEdit",
+           invoice,
+            AdditionalSteps:[35,40]
+          },
+        },
+        id: _id,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
+  return {
+    data,
+    loading,
+    error,
+    clientLogin,
+    changeOrg,
+    testingFunction,
+    initNewInvoice,
+    getInvoOwnerInfo,
+    saveInvoice
+  }; // returns necessary states, like data loading and error, others are functions
 }
 
 export default useRpc;

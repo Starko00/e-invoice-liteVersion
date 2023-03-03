@@ -1,17 +1,17 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { LoginPage } from "./Pages/LoginPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import { HomePage } from "./Pages/HomePage";
-import { MainNavigation } from "./Components/AuthComponents/NavigationComponent/MainNavigation";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, createContext } from "react";
-import axios from "axios";
+
 import { InvoiceEditor } from "./Components/InoviceEditor/InoviceEditor";
+import { Dashboard } from "./Pages/InnerPages/Dashboard";
+import { ErrorPage } from "./Pages/ErrorPage";
 export const UserContext = createContext();
 function App() {
   const [user, setUser] = useState([""]);
-
-
+  
   // Fetch the base path of this app to be used by <Router> below.
   // IMPORTANT: It must NOT end with a slash, or React's router will be thrown off!
   let basePath = ".";
@@ -28,24 +28,22 @@ function App() {
     }
   }
 
-
-
-  console.log("BASE URL: " + baseUrl);
-  console.log("BASE PATH: " + basePath);
+  // console.log("BASE URL: " + baseUrl);
+  // console.log("BASE PATH: " + basePath);
+  // basename={basePath}
   return (
     <div className="App">
       <UserContext.Provider value={[user, setUser]}>
-        <Router>
+        <Router >
           <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route  path="/home" element={<HomePage />}>
-              <Route index element={<InvoiceEditor />} />
+            <Route exact path="/" element={<LoginPage />} />
+            <Route exact path="/home" element={<HomePage />}>
+              <Route index element={<Dashboard/>} />
             </Route>
-            <Route path="*" element={<div>404 REACT</div>}/>
+            <Route path="*" element={<ErrorPage/> } />
           </Routes>
         </Router>
       </UserContext.Provider>
-      {/* <LoginPage/> */}
     </div>
   );
 }
