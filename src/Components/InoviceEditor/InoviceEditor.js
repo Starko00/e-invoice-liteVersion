@@ -2,14 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
 import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
+import { BsFillPlusSquareFill } from "react-icons/bs";
 export const InvoiceEditor = ({ props }) => {
   // Invoice editor style
   const style = InvoiceEditorStyle;
-
+  console.log(props);
   // Current user info from global state
   const [user] = useContext(UserContext);
 
-  // Invoice owner infro from backend
+  // Invoice owner info from backend
   const { data, getInvoOwnerInfo, saveInvoice } = useRpc();
 
   // Articles array
@@ -74,11 +75,9 @@ export const InvoiceEditor = ({ props }) => {
     props.Invoice.EU_Invoices.InvAmountInclVatInp =
       ammountWithoutPDV + totalAmmountOfPDV;
     props.Invoice.EU_Invoices.InvTotalVatAmountCCInp = totalAmmountOfPDV;
-    props.Invoice.EU_Invoices._details.EU_Invoices_PaymentInstrs[0].PaymentAmount = ammountWithoutPDV +totalAmmountOfPDV
-
-
-
-
+    props.Invoice.EU_Invoices._details.EU_Invoices_PaymentInstrs[0].PaymentAmount =
+      ammountWithoutPDV + totalAmmountOfPDV;
+    console.log(totalAmmountOfPDV, "PDV");
   }, [ammountWithoutPDV]);
   const calculateAll = () => {
     articles.map((article) => {
@@ -270,7 +269,7 @@ export const InvoiceEditor = ({ props }) => {
             <tr className={style.tableHeder}>
               <th>Nazov stave</th>
               <th>Kolicina</th>
-              <th>UMCodeNameSC__Code</th>
+              <th>JM</th>
               <th>Cijena bez PDV</th>
               <th>%PDV</th>
               <th>Cijena sa PDV</th>
@@ -284,12 +283,14 @@ export const InvoiceEditor = ({ props }) => {
                   <td>{article.ItemName}</td>
 
                   <td>{article.Quantity}</td>
-                  <td>Kom</td>
+                  <td>{article.UMCodeNameSC__Code}</td>
                   <td>{article.ItemNetPrice}</td>
                   <td>{article.ItemVatCodeSC__VatCode}</td>
                   <td>
                     {Math.round(
-                      Number(article.ItemNetPrice) * 0.21 +
+                      (Number(article.ItemNetPrice) *
+                        Number(article.ItemVatCodeSC__VatCode)) /
+                        100 +
                         Number(article.ItemNetPrice)
                     )}
                   </td>
@@ -297,20 +298,22 @@ export const InvoiceEditor = ({ props }) => {
                     {Number(article.ItemNetPrice) * Number(article.Quantity)}
                   </td>
                   <td>
-                    {Number(article.ItemNetPrice) *
+                    {(Number(article.ItemNetPrice) *
                       Number(article.Quantity) *
-                      0.21}
+                      Number(article.ItemVatCodeSC__VatCode)) /
+                      100}
                   </td>
                   <td>
                     {Number(article.ItemNetPrice) * Number(article.Quantity) +
-                      Number(article.ItemNetPrice) *
+                      (Number(article.ItemNetPrice) *
                         Number(article.Quantity) *
-                        0.21}
+                        Number(article.ItemVatCodeSC__VatCode)) /
+                        100}
                   </td>
                 </tr>
               );
             })}
-            <tr>
+            <tr className={style.articleInputContainer}>
               <td>
                 <input
                   type={"text"}
@@ -339,17 +342,15 @@ export const InvoiceEditor = ({ props }) => {
                 <input
                   type={"number"}
                   onChange={(e) => setItemVatCodeSC__VatCode(e.target.value)}
-                  defaultValue={"21"}
                 />
               </td>
               <td>
-                <button
+                <BsFillPlusSquareFill
+                  className={style.icon}
                   onClick={() => {
                     addNewArticle();
                   }}
-                >
-                  add
-                </button>
+                />
               </td>
             </tr>{" "}
           </tbody>
@@ -361,28 +362,29 @@ export const InvoiceEditor = ({ props }) => {
           <h4>Opste napomene:</h4>
           <textarea />
         </div>
-        <div className={style.paymentMethodsContainer}> </div>
-        <table>
-          <tbody>
-            <tr>
-              <th>Neto iznos stavki</th>
-              <th></th>
-            </tr>
-            <tr>
-              <td>Ukupan iznos bez PDV</td>
-              <td>{ammountWithoutPDV}</td>
-            </tr>
-            <tr>
-              <td>Ukupan iznos PDV</td>
-              <td>{totalAmmountOfPDV}</td>
-            </tr>
-            <tr>
-              <td>Ukupan iznos sa PDV</td>
-              <td>{ammountWithoutPDV + totalAmmountOfPDV}</td>
-            </tr>
-          </tbody>
-        </table>
-        <h4>Ukupno za placanje {ammountWithoutPDV + totalAmmountOfPDV}</h4>
+        <div className={style.calculationsContainer}>
+          <table>
+            <tbody>
+              <tr>
+                <th>Neto iznos stavki</th>
+                <th></th>
+              </tr>
+              <tr>
+                <td>Ukupan iznos bez PDV</td>
+                <td>{ammountWithoutPDV}</td>
+              </tr>
+              <tr>
+                <td>Ukupan iznos PDV</td>
+                <td>{totalAmmountOfPDV}</td>
+              </tr>
+              <tr>
+                <td>Ukupan iznos sa PDV</td>
+                <td>{ammountWithoutPDV + totalAmmountOfPDV}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>Ukupno za placanje: <span>{ammountWithoutPDV + totalAmmountOfPDV}</span></h4>
+        </div>
       </div>
       <button
         onClick={() => {

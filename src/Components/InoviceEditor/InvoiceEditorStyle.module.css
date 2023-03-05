@@ -5,6 +5,12 @@
   max-width: 1250px;
   padding: 22px;
 }
+.mainContainer input{
+  font-family: inherit !important;
+}
+.mainContainer textarea{
+  font-family: inherit  !important;
+}
 .mainContainer * {
   box-sizing: border-box;
 }
@@ -245,3 +251,97 @@
 
 }
 
+/* Calculations container --Displaying values */
+.calculationsContainer{
+  background-color: white;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  min-width: 270px;
+  height: 171px;
+  padding-left:12px ;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.calculationsContainer table{
+  text-align: left;
+  width: 100%;
+}
+.calculationsContainer table th{
+  font-weight: 700;
+  font-size: 1rem;
+}
+.calculationsContainer table td{
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  color: var(--fontColorTransparent);
+}
+.calculationsContainer h4{
+  font-size: 1rem;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--fontColorTransparent);
+}
+.calculationsContainer h4 span{
+  color: green;
+  font-size: 24px;
+}
+.articlesContainer td input{
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: 1px solid var(--fontColorTransparent);
+  font-size: 14px;
+}
+.articlesContainer td input:focus{
+  outline: none;
+}
+.articlesContainer td input:placeholder-shown{
+  color: var(--fontColorTransparent);
+}
+.articleInputContainer .icon{
+  min-width: 25px;
+  min-height: 25px;
+  max-width: 25px;
+  max-height: 25px;
+ color: var(--blueMain);
+}
+.articleInputContainer .icon:hover{
+cursor: pointer;
+scale: 0.95;
+opacity: 0.8;
+}
+.articleInputContainer{
+  background-color: #00000000 !important;
+}
+/*  */
+.articleInputContainer select {
+  display: inline-block;
+  
+  max-width: 120px;
+  font-size: 14px;
+  color: var(--fontMainColor);
+  cursor: pointer;
+  padding: 7px 4px;
+  outline: 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.articleInputContainer select::-ms-expand {
+  display: none;
+}
+.articleInputContainer select:hover,
+.articleInputContainer select:focus {
+  color: #000000;
+  background: #cccccc;
+}
+.articleInputContainer select:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.invoiceBottomContainer{
+  display: flex;
+}
