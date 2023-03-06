@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
 import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
-import { BsFillPlusSquareFill } from "react-icons/bs";
+import { BsFillPlusSquareFill, BsFillXSquareFill } from "react-icons/bs";
 export const InvoiceEditor = ({ props }) => {
   // Invoice editor style
   const style = InvoiceEditorStyle;
@@ -118,7 +118,12 @@ export const InvoiceEditor = ({ props }) => {
       },
     ]);
   }; //Adds a new article to the object that has been initialized
+  const removeArticle = (item)=>{
+    console.log(articles.indexOf(item))
 
+    setArticles((articles)=>[...articles.filter((article) => {return articles.indexOf(article) !== articles.indexOf(item)})])
+    // setArticles((articles)=>[articles.splice(articles.indexOf(item),1)])
+  } //Removes an article object from articles array
   const inputFunction = (key, value) => {
     props.Invoice.EU_Invoices[key] = value;
   }; //Filles in the invoice object
@@ -309,7 +314,9 @@ export const InvoiceEditor = ({ props }) => {
                         Number(article.Quantity) *
                         Number(article.ItemVatCodeSC__VatCode)) /
                         100}
+                  <BsFillXSquareFill className={style.dropItemIcon} onClick={()=>{ removeArticle(article)}}/>
                   </td>
+                  
                 </tr>
               );
             })}
@@ -345,12 +352,13 @@ export const InvoiceEditor = ({ props }) => {
                 />
               </td>
               <td>
-                <BsFillPlusSquareFill
-                  className={style.icon}
+                <button className={style.buttonAdd}
                   onClick={() => {
                     addNewArticle();
                   }}
-                />
+                >
+                  <BsFillPlusSquareFill className={style.icon} />
+                </button>
               </td>
             </tr>{" "}
           </tbody>
@@ -361,6 +369,14 @@ export const InvoiceEditor = ({ props }) => {
         <div className={style.invoiceGeneral}>
           <h4>Opste napomene:</h4>
           <textarea />
+        </div>
+        <div className={style.payementMethods}>
+            <table>
+              <tbody>
+                <tr><th>Nacin placanja</th><th>Dodatni podaci</th></tr>
+                  <tr><td><select><option>Virman</option></select></td><td><input type={'text'} placeholder="Br. racuna"></input></td></tr>
+              </tbody>
+            </table>
         </div>
         <div className={style.calculationsContainer}>
           <table>
@@ -383,7 +399,10 @@ export const InvoiceEditor = ({ props }) => {
               </tr>
             </tbody>
           </table>
-          <h4>Ukupno za placanje: <span>{ammountWithoutPDV + totalAmmountOfPDV}</span></h4>
+          <h4>
+            Ukupno za placanje:{" "}
+            <span>{ammountWithoutPDV + totalAmmountOfPDV}</span>
+          </h4>
         </div>
       </div>
       <button

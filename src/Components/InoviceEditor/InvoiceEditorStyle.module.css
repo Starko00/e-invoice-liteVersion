@@ -4,12 +4,16 @@
   border-radius: 8px;
   max-width: 1250px;
   padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+ 
 }
-.mainContainer input{
+.mainContainer input {
   font-family: inherit !important;
 }
-.mainContainer textarea{
-  font-family: inherit  !important;
+.mainContainer textarea {
+  font-family: inherit !important;
 }
 .mainContainer * {
   box-sizing: border-box;
@@ -48,6 +52,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
   min-height: 170px;
+  background-color: white;
 }
 .invoiceSellerData img {
   width: 80px;
@@ -66,6 +71,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
   color: var(--fontMainColor);
+  background-color: white;
 }
 .invoiceEsentialSettings {
   display: flex;
@@ -135,6 +141,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
   color: var(--fontMainColor);
+  background-color: white;
 }
 .firstInvoiceNoteHolder textarea {
   padding: 3px;
@@ -160,6 +167,7 @@
   border-radius: 4px;
   padding-left: 1rem;
   padding-top: 6px;
+  background-color: white;
 
   padding-bottom: 6px;
   color: var(--fontMainColor);
@@ -221,22 +229,28 @@
 .articlesContainer {
   display: flex;
   flex-direction: column;
+  max-height: 800px;
+  overflow: scroll;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  padding-left: 12px;
+  padding-right: 12px;
 }
-.articlesContainer table{
-  text-align: center; 
+.articlesContainer table {
+  text-align: center;
   border-collapse: collapse;
   vertical-align: middle;
   border-radius: 4px;
   overflow: hidden;
 }
-.articlesContainer table tr td{
- padding-top: 1rem;
+.articlesContainer table tr td {
+  padding-top: 1rem;
 }
 .tableHeder {
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  
 }
 .tableHeder th {
   font-size: 16px;
@@ -244,79 +258,77 @@
   font-weight: 500;
   border-collapse: collapse;
   border: none;
-
 }
-.articlesContainer table tr:nth-of-type(even){
+.articlesContainer table tr:nth-of-type(even) {
   background: rgba(35, 54, 124, 0.1);
-
 }
 
 /* Calculations container --Displaying values */
-.calculationsContainer{
+.calculationsContainer {
   background-color: white;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   min-width: 270px;
   height: 171px;
-  padding-left:12px ;
+  padding-left: 12px;
   padding-top: 9px;
   padding-bottom: 9px;
 }
-.calculationsContainer table{
+.calculationsContainer table {
   text-align: left;
   width: 100%;
 }
-.calculationsContainer table th{
+.calculationsContainer table th {
   font-weight: 700;
   font-size: 1rem;
 }
-.calculationsContainer table td{
+.calculationsContainer table td {
   font-size: 14px;
   line-height: 21px;
   font-weight: 500;
   color: var(--fontColorTransparent);
 }
-.calculationsContainer h4{
+.calculationsContainer h4 {
   font-size: 1rem;
   line-height: 24px;
   font-weight: 500;
   color: var(--fontColorTransparent);
 }
-.calculationsContainer h4 span{
+.calculationsContainer h4 span {
   color: green;
   font-size: 24px;
 }
-.articlesContainer td input{
+.articlesContainer td input {
   border: none;
   background-color: rgba(0, 0, 0, 0);
   border-bottom: 1px solid var(--fontColorTransparent);
   font-size: 14px;
 }
-.articlesContainer td input:focus{
+.articlesContainer td input:focus {
   outline: none;
 }
-.articlesContainer td input:placeholder-shown{
+.articlesContainer td input:placeholder-shown {
   color: var(--fontColorTransparent);
 }
-.articleInputContainer .icon{
+.articleInputContainer .icon {
   min-width: 25px;
   min-height: 25px;
   max-width: 25px;
   max-height: 25px;
- color: var(--blueMain);
+  color: var(--blueMain);
 }
-.articleInputContainer .icon:hover{
-cursor: pointer;
-scale: 0.95;
-opacity: 0.8;
+.articleInputContainer .icon:hover {
+  cursor: pointer;
+  scale: 0.95;
+  opacity: 0.8;
 }
-.articleInputContainer{
+.articleInputContainer {
   background-color: #00000000 !important;
 }
 /*  */
 .articleInputContainer select {
   display: inline-block;
-  
+
   max-width: 120px;
   font-size: 14px;
   color: var(--fontMainColor);
@@ -342,6 +354,46 @@ opacity: 0.8;
   opacity: 0.5;
   pointer-events: none;
 }
-.invoiceBottomContainer{
+.invoiceBottomContainer {
   display: flex;
+  margin-top:14px;
+  gap: 1rem;
+}
+.invoiceGeneral {
+  width: 434px;
+  box-sizing: border-box;
+  height: 171px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  background: white;
+   padding-top: 9px;
+  padding-right: 12px;
+  padding-bottom: 9px;
+   padding-left: 12px;
+}
+.invoiceGeneral h4 {
+  font-size: 1rem;
+  line-height: 24px;
+ 
+  padding: 0rem;
+  margin: 0rem;
+ 
+}
+.invoiceGeneral textarea{
+ width: 100%;
+ height: 80%;
+ border-radius: 4px;
+ border-color: rgba(0, 0, 0, 0.151);
+ resize: none;
+ font-family: inherit;
+}
+.buttonAdd{
+  border: none;
+  padding: 0rem;
+  background-color: #ffffff;
+}
+.buttonAdd:focus{
+  outline: none;
+  scale: 0.95;
+  opacity: 0.85;
 }
