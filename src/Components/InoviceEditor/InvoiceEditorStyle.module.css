@@ -397,3 +397,15 @@
   scale: 0.95;
   opacity: 0.85;
 }
+.dropItemIcon{
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  color: rgb(170, 24, 24);
+
+}
+.dropItemIcon:hover{
+  scale: 0.95;
+  opacity: 0.85;
+  cursor: pointer;
+}

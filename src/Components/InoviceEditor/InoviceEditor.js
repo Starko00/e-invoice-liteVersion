@@ -66,8 +66,7 @@ export const InvoiceEditor = ({ props }) => {
   // Inovice calculation inportant
   const [ammountWithoutPDV, setAmmountWithoutPDV] = useState(0);
   const [totalAmmountOfPDV, setTotalAmmountOfPDV] = useState(0);
-  const [totalAmmount, settotalAmmount] = useState(0);
-
+ 
   useEffect(() => {
     getInvoOwnerInfo(); //Invoice owner info will be changed based on the current active user and primary organization from the Rpc Object
   }, [user]);
@@ -77,11 +76,13 @@ export const InvoiceEditor = ({ props }) => {
     props.Invoice.EU_Invoices.InvTotalVatAmountCCInp = totalAmmountOfPDV;
     props.Invoice.EU_Invoices._details.EU_Invoices_PaymentInstrs[0].PaymentAmount =
       ammountWithoutPDV + totalAmmountOfPDV;
-    console.log(totalAmmountOfPDV, "PDV");
+   
   }, [ammountWithoutPDV]);
   const calculateAll = () => {
     articles.map((article) => {
-      let sum = Number(article.ItemNetPrice) * Number(article.Quantity);
+      let sum = 0;
+
+      sum = Number(article.ItemNetPrice) * Number(article.Quantity);
       sum = ammountWithoutPDV + sum;
       setAmmountWithoutPDV(sum);
 
@@ -91,6 +92,7 @@ export const InvoiceEditor = ({ props }) => {
           Number(article.Quantity) *
           (Number(article.ItemVatCodeSC__VatCode) / 100);
       setTotalAmmountOfPDV(pdvSum);
+      return true
     }); //Calculates the finall sum of the articles
   };
   useEffect(() => {
@@ -118,17 +120,21 @@ export const InvoiceEditor = ({ props }) => {
       },
     ]);
   }; //Adds a new article to the object that has been initialized
-  const removeArticle = (item)=>{
-    console.log(articles.indexOf(item))
+  
+  const removeArticle = (item) => {
+    setArticles((articles) => [
+      ...articles.filter((article) => {
+        return articles.indexOf(article) !== articles.indexOf(item);
+      }),
+    ]);
+  }; //Removes an article object from articles array
 
-    setArticles((articles)=>[...articles.filter((article) => {return articles.indexOf(article) !== articles.indexOf(item)})])
-    // setArticles((articles)=>[articles.splice(articles.indexOf(item),1)])
-  } //Removes an article object from articles array
   const inputFunction = (key, value) => {
     props.Invoice.EU_Invoices[key] = value;
   }; //Filles in the invoice object
 
   return (
+    // Main invoice editor
     <div className={style.mainContainer}>
       {/* Seller container */}
       <div className={style.sellerContainer}>
@@ -200,6 +206,7 @@ export const InvoiceEditor = ({ props }) => {
             }}
           />
         </div>
+        {/* Buyer data holder.... IMPORTANT */}
         <div className={style.buyerDataHolder}>
           <h4>Kupac:</h4>
           <select>
@@ -242,13 +249,7 @@ export const InvoiceEditor = ({ props }) => {
                 inputFunction("BuyerTaxNum", e.target.value);
               }}
             />
-            {/* <input
-              type={"text"}
-              placeholder="Maticni broj"
-              onChange={(e) => {
-                inputFunction("BuyerRegNum", e.target.value);
-              }}
-            /> */}
+
             <input
               type={"text"}
               placeholder="ID"
@@ -263,10 +264,11 @@ export const InvoiceEditor = ({ props }) => {
                 inputFunction("BuyerVatNum", e.target.value);
               }}
             />
-            {/* <input type={"text"} placeholder="Korisnik javnih sredstava" onChange={e=>{inputFunction('BuyerFormalName',e.target.value)}} /> */}
+          
           </div>
         </div>
       </div>
+      {/* Articles container, display (Table) */}
       <div className={style.articlesContainer}>
         <h3>Artikli:</h3>
         <table>
@@ -282,9 +284,10 @@ export const InvoiceEditor = ({ props }) => {
               <th>Iznos PDV</th>
               <th>Iznos sa PDV</th>
             </tr>
+            {/* Articles listing */}
             {articles.map((article) => {
               return (
-                <tr>
+                <tr className={style.newArticleHolder} key={articles.indexOf(article)}>
                   <td>{article.ItemName}</td>
 
                   <td>{article.Quantity}</td>
@@ -314,12 +317,18 @@ export const InvoiceEditor = ({ props }) => {
                         Number(article.Quantity) *
                         Number(article.ItemVatCodeSC__VatCode)) /
                         100}
-                  <BsFillXSquareFill className={style.dropItemIcon} onClick={()=>{ removeArticle(article)}}/>
+                    <BsFillXSquareFill
+                      className={style.dropItemIcon}
+                      onClick={() => {
+                        removeArticle(article);
+                      }}
+                    />
                   </td>
-                  
                 </tr>
               );
             })}
+            {/* End of article listing */}
+            {/* Article input container */}
             <tr className={style.articleInputContainer}>
               <td>
                 <input
@@ -352,7 +361,8 @@ export const InvoiceEditor = ({ props }) => {
                 />
               </td>
               <td>
-                <button className={style.buttonAdd}
+                <button
+                  className={style.buttonAdd}
                   onClick={() => {
                     addNewArticle();
                   }}
@@ -361,22 +371,35 @@ export const InvoiceEditor = ({ props }) => {
                 </button>
               </td>
             </tr>{" "}
+            {/* Article input container END */}
           </tbody>
         </table>
       </div>
-
+{/* Article invoice bottom container, payement details and calculations */}
       <div className={style.invoiceBottomContainer}>
         <div className={style.invoiceGeneral}>
           <h4>Opste napomene:</h4>
           <textarea />
         </div>
         <div className={style.payementMethods}>
-            <table>
-              <tbody>
-                <tr><th>Nacin placanja</th><th>Dodatni podaci</th></tr>
-                  <tr><td><select><option>Virman</option></select></td><td><input type={'text'} placeholder="Br. racuna"></input></td></tr>
-              </tbody>
-            </table>
+          <table>
+            <tbody>
+              <tr>
+                <th>Nacin placanja</th>
+                <th>Dodatni podaci</th>
+              </tr>
+              <tr>
+                <td>
+                  <select>
+                    <option>Virman</option>
+                  </select>
+                </td>
+                <td>
+                  <input type={"text"} placeholder="Br. racuna"></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div className={style.calculationsContainer}>
           <table>
