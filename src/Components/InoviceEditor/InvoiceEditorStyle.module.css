@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
- 
+  
 }
 .mainContainer input {
   font-family: inherit !important;
@@ -356,7 +356,7 @@
 }
 .invoiceBottomContainer {
   display: flex;
-  margin-top:14px;
+  margin-top: 14px;
   gap: 1rem;
 }
 .invoiceGeneral {
@@ -366,46 +366,171 @@
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   background: white;
-   padding-top: 9px;
+  padding-top: 9px;
   padding-right: 12px;
   padding-bottom: 9px;
-   padding-left: 12px;
+  padding-left: 12px;
 }
 .invoiceGeneral h4 {
   font-size: 1rem;
   line-height: 24px;
- 
+
   padding: 0rem;
   margin: 0rem;
- 
 }
-.invoiceGeneral textarea{
- width: 100%;
- height: 80%;
- border-radius: 4px;
- border-color: rgba(0, 0, 0, 0.151);
- resize: none;
- font-family: inherit;
+.invoiceGeneral textarea {
+  width: 100%;
+  height: 80%;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.151);
+  resize: none;
+  font-family: inherit;
 }
-.buttonAdd{
+.buttonAdd {
   border: none;
   padding: 0rem;
   background-color: #ffffff;
 }
-.buttonAdd:focus{
+.buttonAdd:focus {
   outline: none;
   scale: 0.95;
   opacity: 0.85;
 }
-.dropItemIcon{
+.dropItemIcon {
   width: 20px;
   height: 20px;
   margin-left: 4px;
   color: rgb(170, 24, 24);
-
 }
-.dropItemIcon:hover{
+.dropItemIcon:hover {
   scale: 0.95;
   opacity: 0.85;
   cursor: pointer;
+}
+.payementMethods {
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  min-width: 370px;
+  padding-top: 9px;
+  padding-right: 12px;
+  padding-bottom: 9px;
+  padding-left: 12px;
+  height: 171px;
+}
+.payementMethods table {
+  text-align: left;
+}
+.payementMethods table th {
+  text-align: left;
+  min-width: 150px;
+}
+.payementMethods input {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  height: 21px;
+  padding: 1px;
+  height: 30px;
+  padding-left: 4px;
+  font-size: 14px;
+}
+
+.payementMethods select {
+  display: inline-block;
+
+  max-width: 120px;
+  font-size: 14px;
+  color: var(--fontMainColor);
+  cursor: pointer;
+  padding: 7px 4px;
+  outline: 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.payementMethods select::-ms-expand {
+  display: none;
+}
+.payementMethods select:hover,
+.payementMethods select:focus {
+  color: #000000;
+  background: #cccccc;
+}
+.payementMethods select:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.invoiceControlsHolder {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.invoiceControlsHolder button {
+  padding: 7px 12px;
+
+  background-color: var(--blueMain);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.invoiceControlsHolder button:hover {
+  scale: 0.95;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.fisBtn{
+  background-color: #387a3f!important; 
+}
+.resetBtn{
+  background-color: #b43839 !important;
+}
+@media (max-width: 1270px) {
+  .sellerContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+  }
+  .invoiceSellerData {
+    box-sizing: border-box;
+    max-width: 500px;
+    order: 1;
+    min-width: 200px;
+  }
+  .invoiceSettingsHolder {
+    max-width: 500px;
+    order: 3;
+    min-width: 200px;
+  }
+  .firstInvoiceNoteHolder {
+    max-width: 500px;
+    order: 4;
+    min-width: 200px;
+    padding-right: 12px;
+  }
+  .firstInvoiceNoteHolder textarea {
+    width: 100%;
+  }
+  .buyerDataHolder {
+    box-sizing: border-box;
+    max-width: 500px;
+    min-width: 200px;
+    order: 2;
+  }
+}
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+}
+@media (max-width: 480px) {
 }

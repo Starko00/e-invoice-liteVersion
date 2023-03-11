@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="App">
       <UserContext.Provider value={[user, setUser]}>
-        <Router >
+        <Router  >
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
             <Route exact path="/home" element={<HomePage />}>

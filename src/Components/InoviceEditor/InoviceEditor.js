@@ -66,7 +66,7 @@ export const InvoiceEditor = ({ props }) => {
   // Inovice calculation inportant
   const [ammountWithoutPDV, setAmmountWithoutPDV] = useState(0);
   const [totalAmmountOfPDV, setTotalAmmountOfPDV] = useState(0);
- 
+
   useEffect(() => {
     getInvoOwnerInfo(); //Invoice owner info will be changed based on the current active user and primary organization from the Rpc Object
   }, [user]);
@@ -76,7 +76,6 @@ export const InvoiceEditor = ({ props }) => {
     props.Invoice.EU_Invoices.InvTotalVatAmountCCInp = totalAmmountOfPDV;
     props.Invoice.EU_Invoices._details.EU_Invoices_PaymentInstrs[0].PaymentAmount =
       ammountWithoutPDV + totalAmmountOfPDV;
-   
   }, [ammountWithoutPDV]);
   const calculateAll = () => {
     articles.map((article) => {
@@ -92,7 +91,7 @@ export const InvoiceEditor = ({ props }) => {
           Number(article.Quantity) *
           (Number(article.ItemVatCodeSC__VatCode) / 100);
       setTotalAmmountOfPDV(pdvSum);
-      return true
+      return true;
     }); //Calculates the finall sum of the articles
   };
   useEffect(() => {
@@ -120,7 +119,7 @@ export const InvoiceEditor = ({ props }) => {
       },
     ]);
   }; //Adds a new article to the object that has been initialized
-  
+
   const removeArticle = (item) => {
     setArticles((articles) => [
       ...articles.filter((article) => {
@@ -223,7 +222,7 @@ export const InvoiceEditor = ({ props }) => {
             />
             <input
               type={"text"}
-              placeholder="Post COde"
+              placeholder="Post code"
               onChange={(e) => {
                 inputFunction("BuyerPostCode", e.target.value);
               }}
@@ -264,7 +263,6 @@ export const InvoiceEditor = ({ props }) => {
                 inputFunction("BuyerVatNum", e.target.value);
               }}
             />
-          
           </div>
         </div>
       </div>
@@ -287,7 +285,10 @@ export const InvoiceEditor = ({ props }) => {
             {/* Articles listing */}
             {articles.map((article) => {
               return (
-                <tr className={style.newArticleHolder} key={articles.indexOf(article)}>
+                <tr
+                  className={style.newArticleHolder}
+                  key={articles.indexOf(article)}
+                >
                   <td>{article.ItemName}</td>
 
                   <td>{article.Quantity}</td>
@@ -375,7 +376,7 @@ export const InvoiceEditor = ({ props }) => {
           </tbody>
         </table>
       </div>
-{/* Article invoice bottom container, payement details and calculations */}
+      {/* Article invoice bottom container, payement details and calculations */}
       <div className={style.invoiceBottomContainer}>
         <div className={style.invoiceGeneral}>
           <h4>Opste napomene:</h4>
@@ -395,7 +396,11 @@ export const InvoiceEditor = ({ props }) => {
                   </select>
                 </td>
                 <td>
-                  <input type={"text"} placeholder="Br. racuna"></input>
+                  <div>
+                    <input type={"text"} placeholder="Br. racuna" />
+                    <input type={"text"} placeholder="Bic/Switf" />
+                    <input type={"text"} placeholder="Doznaka info." />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -428,17 +433,21 @@ export const InvoiceEditor = ({ props }) => {
           </h4>
         </div>
       </div>
-      <button
-        onClick={() => {
-          props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
+      <div className={style.invoiceControlsHolder}>
+        <button className={style.saveBtn}
+          onClick={() => {
+            props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
 
-          props.Invoice.EU_Invoices.BuyerOrderRef = "Ugovor";
-          console.log(props);
-          saveInvoice(props.Invoice);
-        }}
-      >
-        Save invoice
-      </button>
+            props.Invoice.EU_Invoices.BuyerOrderRef = "Ugovor";
+            console.log(props);
+            saveInvoice(props.Invoice);
+          }}
+        >
+          Save invoice
+        </button>
+        <button className={style.fisBtn}>Fiscalize</button>
+        <button className={style.resetBtn}>Reset</button>
+      </div>
     </div>
   );
 };
