@@ -3,21 +3,23 @@ import { UserContext } from "../../App";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
 import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
 import { BsFillPlusSquareFill, BsFillXSquareFill } from "react-icons/bs";
+import { SearchResoult } from "./InvoiceEditorInnerComponent/SearchResoult";
 export const InvoiceEditor = ({ props }) => {
   // Invoice editor style
   const style = InvoiceEditorStyle;
-  console.log(props);
+  // console.log(props);
   // Current user info from global state
   const [user] = useContext(UserContext);
 
   // Invoice owner info from backend
   const { data, getInvoOwnerInfo, saveInvoice } = useRpc();
-
+  console.log(data);
   // Articles array
   const [articles, setArticles] = useState([]);
 
-  const [BuyerPostCode, setBuyerPostCode] = useState();
+  
   const [BuyerOrderRef, setBuyerOrderRef] = useState();
+
   // Article object requirements
   const [ItemName, setItemName] = useState(
     props.Invoice.EU_Invoices._details.EU_Invoices_Items[0].ItemName
@@ -62,11 +64,52 @@ export const InvoiceEditor = ({ props }) => {
   const [ItemVatCodeSC, setItemVatCodeSC] = useState(
     props.Invoice.EU_Invoices._details.EU_Invoices_Items[0].ItemVatCodeSC
   );
+  const inputFunction = (key, value) => {
+    props.Invoice.EU_Invoices[key] = value;
+  }; //Filles in the invoice object
 
   // Inovice calculation inportant
   const [ammountWithoutPDV, setAmmountWithoutPDV] = useState(0);
   const [totalAmmountOfPDV, setTotalAmmountOfPDV] = useState(0);
+  // Invoice buyer search
+  const [buyerSearch, setBuyerSearch] = useState();
+  const [searchBuyerResult, setSearchBuyerResult] = useState("");
 
+  // Buyer auto fill
+  const[BuyerFormalName,setBuyerFormalName] = useState('')
+  const[BuyerCity,setBuyerCity] = useState('')
+  const[BuyerAddress,setAddress] = useState('')
+  const[BuyerPostCode,setBuyerPostCode] = useState('')
+  const[BuyerTaxNum,setBuyerTaxNum] = useState('')
+  const[BuyerRegNum,setBuyerRegNum] = useState('')
+  const[BuyerVatNum,setBuyerVatNum] = useState('')
+  const[BuyerIDNum,setBuyerIDNum] = useState('')
+  useEffect(() => {
+    console.log(searchBuyerResult, "Povratni rezultat");
+    if (buyerSearch !== "") {
+      for (const [key, value] of Object.entries(searchBuyerResult)) {
+        console.log(key, value);
+        props.Invoice.EU_Invoices["Buyer" + key] = value;
+        if (key === "City") {
+          props.Invoice.EU_Invoices["Buyer" + key + "Name"] = value;
+        }
+        if (key === "Address") {
+          props.Invoice.EU_Invoices["Buyer" + key + "1"] = value;
+        }
+        
+        setBuyerFormalName(props.Invoice.EU_Invoices["BuyerFormalName"])
+        setBuyerCity(props.Invoice.EU_Invoices["BuyerCity"])
+        setAddress(props.Invoice.EU_Invoices["BuyerAddress1"])
+        setBuyerPostCode(props.Invoice.EU_Invoices["BuyerPostCode"])
+        setBuyerTaxNum(props.Invoice.EU_Invoices["BuyerTaxNum"])
+        setBuyerRegNum(props.Invoice.EU_Invoices["BuyerRegNum"])
+        setBuyerVatNum(props.Invoice.EU_Invoices["BuyerVatNum"])
+        setBuyerIDNum(props.Invoice.EU_Invoices["BuyerIDNum"])
+      }
+     
+      console.log(props.Invoice.EU_Invoices);
+    }
+  }, [searchBuyerResult]);
   useEffect(() => {
     getInvoOwnerInfo(); //Invoice owner info will be changed based on the current active user and primary organization from the Rpc Object
   }, [user]);
@@ -128,12 +171,8 @@ export const InvoiceEditor = ({ props }) => {
     ]);
   }; //Removes an article object from articles array
 
-  const inputFunction = (key, value) => {
-    props.Invoice.EU_Invoices[key] = value;
-  }; //Filles in the invoice object
-
   return (
-    // Main invoice editor
+    // Main invoice editors
     <div className={style.mainContainer}>
       {/* Seller container */}
       <div className={style.sellerContainer}>
@@ -147,7 +186,7 @@ export const InvoiceEditor = ({ props }) => {
               {data?.result?.data[0].PostCode}, {data?.result?.data[0].CityName}
             </p>
             <p>PIB: {user.Organization.TaxNo}</p>
-            <p>Maticni broj:3123311</p>
+            <p>Maticni broj:</p>
             <p>PDV broj:{user.Organization.VatNo}</p>
           </div>
           <div className={style.invoiceLogoHolder}>
@@ -214,52 +253,75 @@ export const InvoiceEditor = ({ props }) => {
           </select>
           <div className={style.buyerData}>
             <input
+            className={style.nameInput}
               type={"text"}
               placeholder="Naziv kupca"
+              
+              value={BuyerFormalName}
               onChange={(e) => {
                 inputFunction("BuyerFormalName", e.target.value);
+                setBuyerFormalName(e.target.value)
+                setBuyerSearch(e.target.value);
               }}
             />
+            <div className={style.searchContainer}><SearchResoult 
+              searchIntent={buyerSearch}
+              functions={setSearchBuyerResult}
+            /></div>
+            
             <input
               type={"text"}
+              value={BuyerPostCode}
               placeholder="Post code"
               onChange={(e) => {
+                setBuyerPostCode(e.target.value)
                 inputFunction("BuyerPostCode", e.target.value);
               }}
             />
             <input
               type={"text"}
               placeholder="Adresa"
+              value={BuyerAddress}
               onChange={(e) => {
+                setAddress(e.target.value)
                 inputFunction("BuyerAddress1", e.target.value);
               }}
             />
             <input
               type={"text"}
               placeholder="Grad"
+              value={BuyerCity}
               onChange={(e) => {
+                setBuyerCity(e.target.value)
                 inputFunction("BuyerCityName", e.target.value);
               }}
             />
             <input
               type={"number"}
+              value={BuyerTaxNum}
               placeholder="PIB"
               onChange={(e) => {
+                setBuyerTaxNum(e.target.value)
                 inputFunction("BuyerTaxNum", e.target.value);
               }}
             />
 
             <input
               type={"text"}
+              value={BuyerRegNum}
               placeholder="ID"
+              
               onChange={(e) => {
+                setBuyerRegNum(e.target.value)
                 inputFunction("BuyerRegNum", e.target.value);
               }}
             />
             <input
               type={"number"}
+              value={BuyerVatNum}
               placeholder="PDV obveznik"
               onChange={(e) => {
+                setBuyerVatNum(e.target.value)
                 inputFunction("BuyerVatNum", e.target.value);
               }}
             />
@@ -434,12 +496,13 @@ export const InvoiceEditor = ({ props }) => {
         </div>
       </div>
       <div className={style.invoiceControlsHolder}>
-        <button className={style.saveBtn}
+        <button
+          className={style.saveBtn}
           onClick={() => {
             props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
 
             props.Invoice.EU_Invoices.BuyerOrderRef = "Ugovor";
-            console.log(props);
+            // console.log(props);
             saveInvoice(props.Invoice);
           }}
         >

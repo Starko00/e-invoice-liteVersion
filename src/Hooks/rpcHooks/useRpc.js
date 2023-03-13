@@ -13,6 +13,7 @@ function useRpc() {
   const [request, setRequest] = useState(null);
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
+  const[searchData,setSearchData] = useState(null)
   useEffect(() => {
     axios
       .post(
@@ -64,11 +65,13 @@ function useRpc() {
       })
       .catch((err) => setError(err))
       .finally(() => {
-        console.log(data, "User auth");
+        // console.log(data, "User auth");
       });
   }; // Client login funtion exported to the front, sends an RPC request and changes the state of the data prop, the state of the loading is set not to change as this function is connected to the validation
-  const clientProve = (_id, userName, password, challange) => {
-    axios
+  const clientProve = (_id, userName, password, challange='') => {
+    console.log(typeof challange)
+    if(typeof challange != 'object'){
+      axios
       .post(
         "/json.rpc",
         {
@@ -91,6 +94,8 @@ function useRpc() {
       .finally(() => {
         setLoading(false);
       });
+    }
+   
   }; // Function that thakes challange and proves the matched identity and the password
   const changeOrg = (organizationId) => {
     axios
@@ -145,6 +150,7 @@ function useRpc() {
           take: null,
         },
         id: _id,
+      
       })
       .then((res) => {
         setData(res.data);
@@ -152,10 +158,10 @@ function useRpc() {
   }; // Gets the information of the current inovice owner
 
   const saveInvoice = (invoice) => {
-    console.log( {args: {
-      Partial: "UIEdit",
-      invoice,
-    },})
+    // console.log( {args: {
+    //   Partial: "UIEdit",
+    //   invoice,
+    // },}) //Console log forwarded invoice object
     axios
       .post("/json.rpc", {
         jsonrpc: "2.0",
@@ -165,8 +171,8 @@ function useRpc() {
 
           args: {
             Partial: "UIEdit",
-           invoice,
-            AdditionalSteps:[35,40]
+            invoice,
+            AdditionalSteps: [35, 40],
           },
         },
         id: _id,
@@ -174,19 +180,46 @@ function useRpc() {
       .then((res) => {
         console.log(res);
       });
+  }; //Saave the invoice, executes the steps
+
+  const searchBuyerRegister = (searchKeyword="", countryCode = "ME") => {
+    console.log(searchKeyword)
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Extension.Execute",
+        params: {
+          extension: "EUeInvoices.SearchBuyerRegisterExt",
+
+          args: {
+            SearchString: searchKeyword,
+            Country: countryCode,
+            SkipTAPServis: false,
+            DirectTAPCall: false,
+          },
+        },
+        id: _id,
+      })
+      .then((res) => {
+        setSearchData(res.data);
+      });
   };
 
   return {
     data,
     loading,
     error,
+    searchData,
     clientLogin,
     changeOrg,
     testingFunction,
     initNewInvoice,
     getInvoOwnerInfo,
-    saveInvoice
+    saveInvoice,
+    searchBuyerRegister,
+    
   }; // returns necessary states, like data loading and error, others are functions
 }
+
 
 export default useRpc;

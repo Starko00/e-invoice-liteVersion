@@ -1,5 +1,5 @@
 .mainContainer {
-  background: var(--cardBackground);
+  background: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   max-width: 1250px;
@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  
 }
 .mainContainer input {
   font-family: inherit !important;
@@ -176,8 +175,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 3px;
+  position: relative;
   max-width: 100%;
 }
+.searchContainer {
+  display: none;
+}
+.searchContainer:hover{
+  display: block;
+}
+.nameInput:focus + .searchContainer {
+  display: block;
+}
+
 .buyerDataHolder input {
   border: 1px solid #d9d9d9;
   border-radius: 4px;
@@ -189,7 +199,7 @@
   outline: 0;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  max-width: 170px;
+  max-width: 120px;
   width: 50%;
 }
 .buyerDataHolder input:hover,
@@ -486,10 +496,10 @@
   cursor: pointer;
   opacity: 0.85;
 }
-.fisBtn{
-  background-color: #387a3f!important; 
+.fisBtn {
+  background-color: #387a3f !important;
 }
-.resetBtn{
+.resetBtn {
   background-color: #b43839 !important;
 }
 @media (max-width: 1270px) {

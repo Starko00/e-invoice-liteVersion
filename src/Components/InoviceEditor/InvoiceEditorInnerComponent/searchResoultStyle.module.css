@@ -1,0 +1,38 @@
+@keyframes miniMenuOpen {
+  from {
+    height: 0rem;
+    opacity: 0.1;
+  }
+  to {
+    height: 100px;
+    opacity: 1;
+  }
+}
+.container {
+  display: flex;
+  animation: miniMenuOpen 300ms ease-in-out;
+  gap: 1rem;
+  position: absolute;
+
+  align-items:center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-color: white;
+  padding: 0.5rem;
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  max-width: 200px;
+  max-height: 100px;
+
+  overflow: scroll;
+}
+.container p {
+  width: 100%;
+  border-radius: 4px;
+  padding: 2px;
+}
+.container p:hover {
+  background-color: var(--blueMain);
+  color: white;
+  cursor: pointer;
+}
