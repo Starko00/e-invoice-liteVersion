@@ -10,14 +10,13 @@ export const InvoiceEditor = ({ props }) => {
   // console.log(props);
   // Current user info from global state
   const [user] = useContext(UserContext);
-
+  const currentDate = new Date(Date.now());
   // Invoice owner info from backend
   const { data, getInvoOwnerInfo, saveInvoice } = useRpc();
   console.log(data);
   // Articles array
   const [articles, setArticles] = useState([]);
 
-  
   const [BuyerOrderRef, setBuyerOrderRef] = useState();
 
   // Article object requirements
@@ -76,14 +75,14 @@ export const InvoiceEditor = ({ props }) => {
   const [searchBuyerResult, setSearchBuyerResult] = useState("");
 
   // Buyer auto fill
-  const[BuyerFormalName,setBuyerFormalName] = useState('')
-  const[BuyerCity,setBuyerCity] = useState('')
-  const[BuyerAddress,setAddress] = useState('')
-  const[BuyerPostCode,setBuyerPostCode] = useState('')
-  const[BuyerTaxNum,setBuyerTaxNum] = useState('')
-  const[BuyerRegNum,setBuyerRegNum] = useState('')
-  const[BuyerVatNum,setBuyerVatNum] = useState('')
-  const[BuyerIDNum,setBuyerIDNum] = useState('')
+  const [BuyerFormalName, setBuyerFormalName] = useState("");
+  const [BuyerCity, setBuyerCity] = useState("");
+  const [BuyerAddress, setAddress] = useState("");
+  const [BuyerPostCode, setBuyerPostCode] = useState("");
+  const [BuyerTaxNum, setBuyerTaxNum] = useState("");
+  const [BuyerRegNum, setBuyerRegNum] = useState("");
+  const [BuyerVatNum, setBuyerVatNum] = useState("");
+  const [BuyerIDNum, setBuyerIDNum] = useState("");
   useEffect(() => {
     console.log(searchBuyerResult, "Povratni rezultat");
     if (buyerSearch !== "") {
@@ -96,17 +95,17 @@ export const InvoiceEditor = ({ props }) => {
         if (key === "Address") {
           props.Invoice.EU_Invoices["Buyer" + key + "1"] = value;
         }
-        
-        setBuyerFormalName(props.Invoice.EU_Invoices["BuyerFormalName"])
-        setBuyerCity(props.Invoice.EU_Invoices["BuyerCity"])
-        setAddress(props.Invoice.EU_Invoices["BuyerAddress1"])
-        setBuyerPostCode(props.Invoice.EU_Invoices["BuyerPostCode"])
-        setBuyerTaxNum(props.Invoice.EU_Invoices["BuyerTaxNum"])
-        setBuyerRegNum(props.Invoice.EU_Invoices["BuyerRegNum"])
-        setBuyerVatNum(props.Invoice.EU_Invoices["BuyerVatNum"])
-        setBuyerIDNum(props.Invoice.EU_Invoices["BuyerIDNum"])
+
+        setBuyerFormalName(props.Invoice.EU_Invoices["BuyerFormalName"]);
+        setBuyerCity(props.Invoice.EU_Invoices["BuyerCity"]);
+        setAddress(props.Invoice.EU_Invoices["BuyerAddress1"]);
+        setBuyerPostCode(props.Invoice.EU_Invoices["BuyerPostCode"]);
+        setBuyerTaxNum(props.Invoice.EU_Invoices["BuyerTaxNum"]);
+        setBuyerRegNum(props.Invoice.EU_Invoices["BuyerRegNum"]);
+        setBuyerVatNum(props.Invoice.EU_Invoices["BuyerVatNum"]);
+        setBuyerIDNum(props.Invoice.EU_Invoices["BuyerIDNum"]);
       }
-     
+
       console.log(props.Invoice.EU_Invoices);
     }
   }, [searchBuyerResult]);
@@ -202,43 +201,61 @@ export const InvoiceEditor = ({ props }) => {
           <h4>Podesavanja racuna:</h4>
           <div className={style.invoiceEsentialSettings}>
             {/* Nacin placanja */}
-            <select>
-              <option>Nacin placanja</option>
-              <option>Cash</option>
-              <option>Non cahs</option>
+            <select
+              onChange={(e) =>
+                inputFunction("InvPaymentTypeCodeNameSC__Code", e.target.value)
+              }
+            >
+              <option value={"NONCASH"}>Bezgotovinski</option>
+              <option value={"CASH"}>Gotovinski</option>
             </select>
             {/* Vrsta prodaje */}
-            <select>
-              <option>Vrsta prodaje</option>
-              <option>2</option>
+            <select
+              onChange={(e) =>
+                inputFunction("InvSaleTypeSC__Code", e.target.value)
+              }
+            >
+              <option value={"Retailsale"}>Maloprodaja</option>
+              <option value={"Wholesale"} selected="selected">
+                Veleprodaja
+              </option>
             </select>
             {/* Rok placanja */}
-            <select>
-              <option>Rok placanja</option>
-              <option>2</option>
-            </select>
+
+            <input
+              type={"text"}
+              onChange={(e) => inputFunction("InvDueDate", e.target.value)}
+              placeholder="Rok placanja"
+              onFocus={(e) => (e.target.type = "date")}
+            />
+            {/* Po broju ponude */}
+            <input
+              placeholder="Ponuda"
+              type={"text"}
+              onChange={(e) => inputFunction("BuyerOrderRef", e.target.value)}
+            />
             {/* Datum isporuke */}
-            <input type={"date"}></input>
-            {/* Ref kupca */}
-            <select>
-              <option>Ref kupca</option>
-              <option>2</option>
-            </select>
-            {/* Ugovor */}
-            <select>
-              <option>Ugovor</option>
-              <option>2</option>
-            </select>
+            <input
+              type={"text"}
+              onFocus={(e) => (e.target.type = "date")}
+              placeholder={"Isporuka od"}
+            ></input>
+            <input
+              type={"text"}
+              onFocus={(e) => (e.target.type = "date")}
+              placeholder={"Isporuka do"}
+            ></input>
           </div>
           <div className={style.invoiceIssueDateHolder}>
-            <p>Mjesto izdavanja: Podgorica</p> <p>22.02.2023, 11:59</p>
+            <p>Mjesto izdavanja: {data?.result?.data[0].CityName}</p>{" "}
+            <p>{currentDate.toISOString().split("T")[0]}</p>
           </div>
         </div>
         {/* Prva napomena */}
         <div className={style.firstInvoiceNoteHolder}>
           <h4>Napomena:</h4>
           <textarea
-            placeholder="napomena"
+            placeholder="Upišite početne napomene"
             onChange={(e) => {
               inputFunction("ReceivingAdviceRef", e.target.value);
             }}
@@ -253,28 +270,29 @@ export const InvoiceEditor = ({ props }) => {
           </select>
           <div className={style.buyerData}>
             <input
-            className={style.nameInput}
+              className={style.nameInput}
               type={"text"}
               placeholder="Naziv kupca"
-              
               value={BuyerFormalName}
               onChange={(e) => {
                 inputFunction("BuyerFormalName", e.target.value);
-                setBuyerFormalName(e.target.value)
+                setBuyerFormalName(e.target.value);
                 setBuyerSearch(e.target.value);
               }}
             />
-            <div className={style.searchContainer}><SearchResoult 
-              searchIntent={buyerSearch}
-              functions={setSearchBuyerResult}
-            /></div>
-            
+            <div className={style.searchContainer}>
+              <SearchResoult
+                searchIntent={buyerSearch}
+                functions={setSearchBuyerResult}
+              />
+            </div>
+
             <input
               type={"text"}
               value={BuyerPostCode}
               placeholder="Post code"
               onChange={(e) => {
-                setBuyerPostCode(e.target.value)
+                setBuyerPostCode(e.target.value);
                 inputFunction("BuyerPostCode", e.target.value);
               }}
             />
@@ -283,7 +301,7 @@ export const InvoiceEditor = ({ props }) => {
               placeholder="Adresa"
               value={BuyerAddress}
               onChange={(e) => {
-                setAddress(e.target.value)
+                setAddress(e.target.value);
                 inputFunction("BuyerAddress1", e.target.value);
               }}
             />
@@ -292,7 +310,7 @@ export const InvoiceEditor = ({ props }) => {
               placeholder="Grad"
               value={BuyerCity}
               onChange={(e) => {
-                setBuyerCity(e.target.value)
+                setBuyerCity(e.target.value);
                 inputFunction("BuyerCityName", e.target.value);
               }}
             />
@@ -301,7 +319,7 @@ export const InvoiceEditor = ({ props }) => {
               value={BuyerTaxNum}
               placeholder="PIB"
               onChange={(e) => {
-                setBuyerTaxNum(e.target.value)
+                setBuyerTaxNum(e.target.value);
                 inputFunction("BuyerTaxNum", e.target.value);
               }}
             />
@@ -310,18 +328,17 @@ export const InvoiceEditor = ({ props }) => {
               type={"text"}
               value={BuyerRegNum}
               placeholder="ID"
-              
               onChange={(e) => {
-                setBuyerRegNum(e.target.value)
+                setBuyerRegNum(e.target.value);
                 inputFunction("BuyerRegNum", e.target.value);
               }}
             />
             <input
-              type={"number"}
+              type={"text"}
               value={BuyerVatNum}
               placeholder="PDV obveznik"
               onChange={(e) => {
-                setBuyerVatNum(e.target.value)
+                setBuyerVatNum(e.target.value);
                 inputFunction("BuyerVatNum", e.target.value);
               }}
             />
@@ -337,9 +354,9 @@ export const InvoiceEditor = ({ props }) => {
               <th>Nazov stave</th>
               <th>Kolicina</th>
               <th>JM</th>
-              <th>Cijena bez PDV</th>
+              <th> bez PDV</th>
               <th>%PDV</th>
-              <th>Cijena sa PDV</th>
+              <th> sa PDV</th>
               <th>Iznos bez PDV</th>
               <th>Iznos PDV</th>
               <th>Iznos sa PDV</th>
@@ -406,9 +423,13 @@ export const InvoiceEditor = ({ props }) => {
                 />
               </td>
               <td>
-                <select onChange={(e) => setUMCodeNameSC__Code(e.target.value)}>
+                <select
+                  onChange={(e) => setUMCodeNameSC__Code(e.target.value)}
+                  className={style.itemType}
+                >
                   <option value={"kom"}>kom</option>
-                  <option value={"pac"}>pac</option>
+
+                  <option value={"pack"}>pak</option>
                 </select>
               </td>
               <td>
@@ -442,7 +463,10 @@ export const InvoiceEditor = ({ props }) => {
       <div className={style.invoiceBottomContainer}>
         <div className={style.invoiceGeneral}>
           <h4>Opste napomene:</h4>
-          <textarea />
+          <textarea
+            placeholder="Upišite opšte napomene"
+            onChange={(e) => inputFunction("InvNote", e.target.value)}
+          />
         </div>
         <div className={style.payementMethods}>
           <table>
@@ -495,13 +519,12 @@ export const InvoiceEditor = ({ props }) => {
           </h4>
         </div>
       </div>
+      {/* Controlls holder */}
       <div className={style.invoiceControlsHolder}>
         <button
           className={style.saveBtn}
           onClick={() => {
             props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
-
-            props.Invoice.EU_Invoices.BuyerOrderRef = "Ugovor";
             // console.log(props);
             saveInvoice(props.Invoice);
           }}

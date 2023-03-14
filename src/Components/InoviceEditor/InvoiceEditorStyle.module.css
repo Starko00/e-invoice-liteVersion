@@ -95,6 +95,21 @@
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+.invoiceEsentialSettings input[type="text"]{
+  width: 120px;
+  max-width: 120px;
+  font-size: 14px;
+  color: var(--fontMainColor);
+  cursor: pointer;
+  padding: 7px 4px;
+  outline: 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 
 .invoiceEsentialSettings select {
   display: inline-block;
@@ -358,12 +373,14 @@
 .articleInputContainer select:hover,
 .articleInputContainer select:focus {
   color: #000000;
-  background: #cccccc;
+  background: #ffffff;
 }
 .articleInputContainer select:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
+
+
 .invoiceBottomContainer {
   display: flex;
   margin-top: 14px;
@@ -502,6 +519,8 @@
 .resetBtn {
   background-color: #b43839 !important;
 }
+
+
 @media (max-width: 1270px) {
   .sellerContainer {
     display: grid;

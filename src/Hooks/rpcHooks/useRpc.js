@@ -203,7 +203,7 @@ function useRpc() {
       .then((res) => {
         setSearchData(res.data);
       });
-  };
+  };//Searching the buyer register and retruns the search resoults in SerchData
 
   return {
     data,
