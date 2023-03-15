@@ -5,10 +5,14 @@ import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
 import { BsFillPlusSquareFill, BsFillXSquareFill } from "react-icons/bs";
 import { SearchResoult } from "./InvoiceEditorInnerComponent/SearchResoult";
 import { LoadingAnimation } from "../AuthComponents/LoadingElement/LoadingAnimation";
-export const InvoiceEditor = ({ props }) => {
+export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
   // Invoice editor style
   const style = InvoiceEditorStyle;
-
+  useEffect(() => {
+    if (props === null || props === undefined) {
+      console.log("Ne moze");
+    }
+  }, [props]);
   // Current user info from global state
   const [user] = useContext(UserContext);
   const currentDate = new Date(Date.now());
@@ -142,7 +146,7 @@ export const InvoiceEditor = ({ props }) => {
     setArticles((articles) => [
       ...articles,
       {
-        ItemName,
+        ItemName: ItemName,
         Quantity: Number(Quantity),
         ItemNetPrice: Number(ItemNetPrice),
         UMCodeNameSC__Code,
@@ -173,6 +177,9 @@ export const InvoiceEditor = ({ props }) => {
       console.log(invoiceSaveResponse);
     }
   }, [invoiceSaveResponse]); //Logs the invoiceSaveResponse back to the client when it's aveable
+  const [invoiceValidationWarrning, setInvoiceValidationWarrning] =
+    useState(false);
+
   const invoiceValidation = () => {
     let validation = false;
     let checker = [];
@@ -185,22 +192,26 @@ export const InvoiceEditor = ({ props }) => {
         }
       }
     }
-    if (checker.length === 0) {
+    if (checker.length === 0 && articles.length > 0) {
       validation = true;
       return { status: true, required: [...checker] };
     } else {
+      setInvoiceValidationWarrning(true);
+      setTimeout(() => setInvoiceValidationWarrning(false), 3000);
       return { status: false, required: [...checker] };
     }
   }; //Validates if all the required fields have been submited
 
-  const invoiceSaveProcedure = (steps = [30]) => {
+  const invoiceSaveProcedure = (steps = [35]) => {
     console.log(invoiceValidation());
     if (invoiceValidation().status === true) {
+      props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
       console.log("Faktura sacuvana");
       saveInvoice(props.Invoice, steps);
-      return 
+      return;
     }
-    alert("Invoice has miisng fields");
+    console.log("Invoice has miisng fields");
+    return;
   }; //Alerts the user about the status of all required fields
   return (
     // Main invoice editors
@@ -263,6 +274,7 @@ export const InvoiceEditor = ({ props }) => {
               placeholder="Ponuda"
               type={"text"}
               onChange={(e) => inputFunction("BuyerOrderRef", e.target.value)}
+              data-required={invoiceValidationWarrning}
             />
             {/* Datum isporuke */}
             <input
@@ -304,6 +316,7 @@ export const InvoiceEditor = ({ props }) => {
               type={"text"}
               placeholder="Naziv kupca"
               value={BuyerFormalName}
+              data-required={invoiceValidationWarrning}
               onChange={(e) => {
                 inputFunction("BuyerFormalName", e.target.value);
                 setBuyerFormalName(e.target.value);
@@ -321,14 +334,17 @@ export const InvoiceEditor = ({ props }) => {
               type={"text"}
               value={BuyerPostCode}
               placeholder="Post code"
+              data-required={invoiceValidationWarrning}
               onChange={(e) => {
                 setBuyerPostCode(e.target.value);
                 inputFunction("BuyerPostCode", e.target.value);
               }}
             />
+
             <input
               type={"text"}
               placeholder="Adresa"
+              data-required={invoiceValidationWarrning}
               value={BuyerAddress}
               onChange={(e) => {
                 setAddress(e.target.value);
@@ -339,6 +355,7 @@ export const InvoiceEditor = ({ props }) => {
               type={"text"}
               placeholder="Grad"
               value={BuyerCity}
+              data-required={invoiceValidationWarrning}
               onChange={(e) => {
                 setBuyerCity(e.target.value);
                 inputFunction("BuyerCityName", e.target.value);
@@ -439,7 +456,17 @@ export const InvoiceEditor = ({ props }) => {
             })}
             {/* End of article listing */}
             {/* Article input container */}
-            <tr className={style.articleInputContainer}>
+            {articles.length < 1 && invoiceValidationWarrning === true ? (
+              <p
+                className={style.ItemInputWarrning}
+                data-showWarning={invoiceValidationWarrning}
+              >
+                Morate unijeti makar jednu stavku
+              </p>
+            ) : (
+              ""
+            )}
+            {articles.length>6-1? "": <tr className={style.articleInputContainer}>
               <td>
                 <input
                   type={"text"}
@@ -484,7 +511,8 @@ export const InvoiceEditor = ({ props }) => {
                   <BsFillPlusSquareFill className={style.icon} />
                 </button>
               </td>
-            </tr>{" "}
+            </tr>}
+           {" "}
             {/* Article input container END */}
           </tbody>
         </table>
@@ -554,8 +582,7 @@ export const InvoiceEditor = ({ props }) => {
         <button
           className={style.saveBtn}
           onClick={() => {
-            props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
-
+            console.log(props);
             invoiceSaveProcedure();
           }}
         >
@@ -565,7 +592,6 @@ export const InvoiceEditor = ({ props }) => {
         <button
           className={style.fisBtn}
           onClick={() => {
-            props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
             invoiceSaveProcedure([35, 40]);
           }}
         >
@@ -573,7 +599,7 @@ export const InvoiceEditor = ({ props }) => {
         </button>
         <button
           className={style.resetBtn}
-          onClick={() => invoiceSaveProcedure()}
+          onClick={() => resetInvoiceEditor(true)}
         >
           Reset
         </button>
