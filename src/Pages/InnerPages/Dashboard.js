@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import DashboardStyle from './DashboardStyle.module.css'
+import DashboardStyle from "./DashboardStyle.module.css";
 import { LoadingAnimation } from "../../Components/AuthComponents/LoadingElement/LoadingAnimation";
 import { InvoiceEditor } from "../../Components/InoviceEditor/InoviceEditor";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
@@ -11,14 +11,17 @@ export const Dashboard = () => {
   useEffect(() => {
     initNewInvoice();
   }, []);
-  const style = DashboardStyle
+  const style = DashboardStyle;
   return (
-    <div className={style.dashboardContainer} >
+    <div className={style.dashboardContainer}>
       <div className={style.LeftSideContainer}>
-        <InvoiceGraph/>
-        <HistoryPrew/>
+        <InvoiceGraph />
+        <HistoryPrew />
       </div>
-      {data ? <InvoiceEditor props={data} /> : <LoadingAnimation />}
+      <div className={style.EditorHolder}>
+        {" "}
+        {data ? <InvoiceEditor props={data} /> : <div><LoadingAnimation /></div>}
+      </div>
 
       {/* {JSON.stringify(data)} */}
     </div>

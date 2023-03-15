@@ -4,16 +4,18 @@ import useRpc from "../../Hooks/rpcHooks/useRpc";
 import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
 import { BsFillPlusSquareFill, BsFillXSquareFill } from "react-icons/bs";
 import { SearchResoult } from "./InvoiceEditorInnerComponent/SearchResoult";
+import { LoadingAnimation } from "../AuthComponents/LoadingElement/LoadingAnimation";
 export const InvoiceEditor = ({ props }) => {
   // Invoice editor style
   const style = InvoiceEditorStyle;
-  // console.log(props);
+
   // Current user info from global state
   const [user] = useContext(UserContext);
   const currentDate = new Date(Date.now());
   // Invoice owner info from backend
-  const { data, getInvoOwnerInfo, saveInvoice } = useRpc();
-  console.log(data);
+  const { data, invoiceSaveResponse, loading, getInvoOwnerInfo, saveInvoice } =
+    useRpc();
+
   // Articles array
   const [articles, setArticles] = useState([]);
 
@@ -84,10 +86,8 @@ export const InvoiceEditor = ({ props }) => {
   const [BuyerVatNum, setBuyerVatNum] = useState("");
   const [BuyerIDNum, setBuyerIDNum] = useState("");
   useEffect(() => {
-    console.log(searchBuyerResult, "Povratni rezultat");
     if (buyerSearch !== "") {
       for (const [key, value] of Object.entries(searchBuyerResult)) {
-        console.log(key, value);
         props.Invoice.EU_Invoices["Buyer" + key] = value;
         if (key === "City") {
           props.Invoice.EU_Invoices["Buyer" + key + "Name"] = value;
@@ -105,8 +105,6 @@ export const InvoiceEditor = ({ props }) => {
         setBuyerVatNum(props.Invoice.EU_Invoices["BuyerVatNum"]);
         setBuyerIDNum(props.Invoice.EU_Invoices["BuyerIDNum"]);
       }
-
-      console.log(props.Invoice.EU_Invoices);
     }
   }, [searchBuyerResult]);
   useEffect(() => {
@@ -170,6 +168,40 @@ export const InvoiceEditor = ({ props }) => {
     ]);
   }; //Removes an article object from articles array
 
+  useEffect(() => {
+    if (invoiceSaveResponse) {
+      console.log(invoiceSaveResponse);
+    }
+  }, [invoiceSaveResponse]); //Logs the invoiceSaveResponse back to the client when it's aveable
+  const invoiceValidation = () => {
+    let validation = false;
+    let checker = [];
+    for (const invItemKey in props.Invoice.EU_Invoices) {
+      if (
+        props.JSONSchema.properties.EU_Invoices.required.includes(invItemKey)
+      ) {
+        if (props.Invoice.EU_Invoices[invItemKey] === null) {
+          checker = [...checker, invItemKey];
+        }
+      }
+    }
+    if (checker.length === 0) {
+      validation = true;
+      return { status: true, required: [...checker] };
+    } else {
+      return { status: false, required: [...checker] };
+    }
+  }; //Validates if all the required fields have been submited
+
+  const invoiceSaveProcedure = (steps = [30]) => {
+    console.log(invoiceValidation());
+    if (invoiceValidation().status === true) {
+      console.log("Faktura sacuvana");
+      saveInvoice(props.Invoice, steps);
+      return 
+    }
+    alert("Invoice has miisng fields");
+  }; //Alerts the user about the status of all required fields
   return (
     // Main invoice editors
     <div className={style.mainContainer}>
@@ -215,10 +247,8 @@ export const InvoiceEditor = ({ props }) => {
                 inputFunction("InvSaleTypeSC__Code", e.target.value)
               }
             >
+              <option value={"Wholesale"}>Veleprodaja</option>{" "}
               <option value={"Retailsale"}>Maloprodaja</option>
-              <option value={"Wholesale"} selected="selected">
-                Veleprodaja
-              </option>
             </select>
             {/* Rok placanja */}
 
@@ -257,7 +287,7 @@ export const InvoiceEditor = ({ props }) => {
           <textarea
             placeholder="Upišite početne napomene"
             onChange={(e) => {
-              inputFunction("ReceivingAdviceRef", e.target.value);
+              inputFunction("InvPreNote", e.target.value);
             }}
           />
         </div>
@@ -354,9 +384,9 @@ export const InvoiceEditor = ({ props }) => {
               <th>Nazov stave</th>
               <th>Kolicina</th>
               <th>JM</th>
-              <th> bez PDV</th>
+              <th>bez PDV</th>
               <th>%PDV</th>
-              <th> sa PDV</th>
+              <th>sa PDV</th>
               <th>Iznos bez PDV</th>
               <th>Iznos PDV</th>
               <th>Iznos sa PDV</th>
@@ -525,15 +555,37 @@ export const InvoiceEditor = ({ props }) => {
           className={style.saveBtn}
           onClick={() => {
             props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
-            // console.log(props);
-            saveInvoice(props.Invoice);
+
+            invoiceSaveProcedure();
           }}
         >
           Save invoice
         </button>
-        <button className={style.fisBtn}>Fiscalize</button>
-        <button className={style.resetBtn}>Reset</button>
+
+        <button
+          className={style.fisBtn}
+          onClick={() => {
+            props.Invoice.EU_Invoices._details.EU_Invoices_Items = articles;
+            invoiceSaveProcedure([35, 40]);
+          }}
+        >
+          Fiscalize
+        </button>
+        <button
+          className={style.resetBtn}
+          onClick={() => invoiceSaveProcedure()}
+        >
+          Reset
+        </button>
       </div>
+      {loading ? (
+        <div className={style.invoiceSubmitLoader}>
+          {" "}
+          <LoadingAnimation />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

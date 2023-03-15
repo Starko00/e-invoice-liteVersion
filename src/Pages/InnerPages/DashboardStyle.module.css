@@ -13,3 +13,20 @@
   flex-direction: column;
   gap: 12px;
 }
+.EditorHolder{
+  width: 1250px;
+  display: flex;
+ align-items: flex-start;
+ justify-content: center;
+}
+
+
+@media (max-width: 1270px) {
+}
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+}
+@media (max-width: 480px) {
+}

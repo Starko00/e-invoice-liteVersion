@@ -13,7 +13,8 @@ function useRpc() {
   const [request, setRequest] = useState(null);
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-  const[searchData,setSearchData] = useState(null)
+  const [searchData, setSearchData] = useState(null);
+  const [invoiceSaveResponse, setInvoiceSaveResponse] = useState(false);
   useEffect(() => {
     axios
       .post(
@@ -68,34 +69,33 @@ function useRpc() {
         // console.log(data, "User auth");
       });
   }; // Client login funtion exported to the front, sends an RPC request and changes the state of the data prop, the state of the loading is set not to change as this function is connected to the validation
-  const clientProve = (_id, userName, password, challange='') => {
-    console.log(typeof challange)
-    if(typeof challange != 'object'){
+  const clientProve = (_id, userName, password, challange = "") => {
+    console.log(typeof challange);
+    if (typeof challange != "object") {
       axios
-      .post(
-        "/json.rpc",
-        {
-          jsonrpc: "2.0",
-          id: _id,
-          method: "Auth.AuthenticateUsername",
-          params: {
-            challenge: challange,
-            proof: SHA1(
-              SHA1(password + SHA1(reverString(userName))) + challange
-            ),
+        .post(
+          "/json.rpc",
+          {
+            jsonrpc: "2.0",
+            id: _id,
+            method: "Auth.AuthenticateUsername",
+            params: {
+              challenge: challange,
+              proof: SHA1(
+                SHA1(password + SHA1(reverString(userName))) + challange
+              ),
+            },
           },
-        },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => setError(err))
-      .finally(() => {
-        setLoading(false);
-      });
+          { withCredentials: true }
+        )
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => setError(err))
+        .finally(() => {
+          setLoading(false);
+        });
     }
-   
   }; // Function that thakes challange and proves the matched identity and the password
   const changeOrg = (organizationId) => {
     axios
@@ -150,18 +150,20 @@ function useRpc() {
           take: null,
         },
         id: _id,
-      
       })
       .then((res) => {
         setData(res.data);
       });
   }; // Gets the information of the current inovice owner
 
-  const saveInvoice = (invoice) => {
+  const saveInvoice = (invoice, steps = [30]) => {
     // console.log( {args: {
     //   Partial: "UIEdit",
     //   invoice,
     // },}) //Console log forwarded invoice object
+    console.log(invoice, { steps });
+    setLoading(true);
+    console.log(invoice)
     axios
       .post("/json.rpc", {
         jsonrpc: "2.0",
@@ -172,18 +174,21 @@ function useRpc() {
           args: {
             Partial: "UIEdit",
             invoice,
-            AdditionalSteps: [35, 40],
+            AdditionalSteps: steps,
           },
         },
         id: _id,
       })
       .then((res) => {
-        console.log(res);
+        setInvoiceSaveResponse(res);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }; //Saave the invoice, executes the steps
 
-  const searchBuyerRegister = (searchKeyword="", countryCode = "ME") => {
-    console.log(searchKeyword)
+  const searchBuyerRegister = (searchKeyword = "", countryCode = "ME") => {
+    console.log(searchKeyword);
     axios
       .post("/json.rpc", {
         jsonrpc: "2.0",
@@ -203,13 +208,14 @@ function useRpc() {
       .then((res) => {
         setSearchData(res.data);
       });
-  };//Searching the buyer register and retruns the search resoults in SerchData
+  }; //Searching the buyer register and retruns the search resoults in SerchData
 
   return {
     data,
     loading,
     error,
     searchData,
+    invoiceSaveResponse,
     clientLogin,
     changeOrg,
     testingFunction,
@@ -217,9 +223,7 @@ function useRpc() {
     getInvoOwnerInfo,
     saveInvoice,
     searchBuyerRegister,
-    
   }; // returns necessary states, like data loading and error, others are functions
 }
-
 
 export default useRpc;
