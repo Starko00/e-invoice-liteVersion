@@ -2,7 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import useRpc from "../../Hooks/rpcHooks/useRpc";
 import InvoiceEditorStyle from "./InvoiceEditorStyle.module.css";
-import { BsFillPlusSquareFill, BsFillXSquareFill } from "react-icons/bs";
+import {
+  BsFillCheckCircleFill,
+  BsFillExclamationCircleFill,
+  BsFillPlusSquareFill,
+  BsFillXSquareFill,
+} from "react-icons/bs";
 import { SearchResoult } from "./InvoiceEditorInnerComponent/SearchResoult";
 import { LoadingAnimation } from "../AuthComponents/LoadingElement/LoadingAnimation";
 export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
@@ -200,7 +205,13 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
       setTimeout(() => setInvoiceValidationWarrning(false), 3000);
       return { status: false, required: [...checker] };
     }
-  }; //Validates if all the required fields have been submited
+  }; //Validates if all the required fields that must  be submited
+
+  useEffect(() => {
+    if (invoiceSaveResponse) {
+      console.log(invoiceSaveResponse.data.result.Status, "Use effect hook");
+    }
+  }, [invoiceSaveResponse]);
 
   const invoiceSaveProcedure = (steps = [35]) => {
     console.log(invoiceValidation());
@@ -466,53 +477,56 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
             ) : (
               ""
             )}
-            {articles.length>6-1? "": <tr className={style.articleInputContainer}>
-              <td>
-                <input
-                  type={"text"}
-                  onChange={(e) => setItemName(e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type={"number"}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  onChange={(e) => setUMCodeNameSC__Code(e.target.value)}
-                  className={style.itemType}
-                >
-                  <option value={"kom"}>kom</option>
+            {articles.length > 6 - 1 ? (
+              ""
+            ) : (
+              <tr className={style.articleInputContainer}>
+                <td>
+                  <input
+                    type={"text"}
+                    onChange={(e) => setItemName(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type={"number"}
+                    onChange={(e) => setQuantity(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <select
+                    onChange={(e) => setUMCodeNameSC__Code(e.target.value)}
+                    className={style.itemType}
+                  >
+                    <option value={"kom"}>kom</option>
 
-                  <option value={"pack"}>pak</option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type={"number"}
-                  onChange={(e) => setItemNetPrice(e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type={"number"}
-                  onChange={(e) => setItemVatCodeSC__VatCode(e.target.value)}
-                />
-              </td>
-              <td>
-                <button
-                  className={style.buttonAdd}
-                  onClick={() => {
-                    addNewArticle();
-                  }}
-                >
-                  <BsFillPlusSquareFill className={style.icon} />
-                </button>
-              </td>
-            </tr>}
-           {" "}
+                    <option value={"pack"}>pak</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type={"number"}
+                    onChange={(e) => setItemNetPrice(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type={"number"}
+                    onChange={(e) => setItemVatCodeSC__VatCode(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <button
+                    className={style.buttonAdd}
+                    onClick={() => {
+                      addNewArticle();
+                    }}
+                  >
+                    <BsFillPlusSquareFill className={style.icon} />
+                  </button>
+                </td>
+              </tr>
+            )}{" "}
             {/* Article input container END */}
           </tbody>
         </table>
@@ -611,6 +625,37 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
         </div>
       ) : (
         ""
+      )}
+      {invoiceSaveResponse ? (
+        <div className={style.responseAfterSave}>
+          {" "}
+          {invoiceSaveResponse.data.result.Status === "OK" ? (
+            <div className={style.okResponse}>
+              <BsFillCheckCircleFill /> <p>Inovice saved</p>{" "}
+              <button
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Make new
+              </button>
+            </div>
+          ) : (
+            <div className={style.errorResponse}>
+              <BsFillExclamationCircleFill />
+              <p>The invoice didn't pass validation!</p>
+              <button
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Try again
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        "nothing"
       )}
     </div>
   );

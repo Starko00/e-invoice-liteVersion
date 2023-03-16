@@ -37,9 +37,9 @@ function App() {
   // console.log("BASE PATH: " + basePath);
   // basename={basePath}
   return (
-    <div className="App" basename={basePath}>
+    <div className="App">
       <UserContext.Provider value={[user, setUser]}>
-        <Router>
+        <Router  >
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
             <Route exact path="/home" element={<HomePage />}>
