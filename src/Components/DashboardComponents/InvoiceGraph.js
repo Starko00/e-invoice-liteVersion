@@ -35,22 +35,22 @@ export const InvoiceGraph = () => {
     ],
     datasets: [
       {
-        label: "Number of invoices",
-        data: [10, 32, 40, 50, 32,10, 32, 40],
+        label: "Number of sent",
+        data: [10, 32, 40, 50, 32,10, 32, 30],
         tension: 0.4,
         backgroundColor: "#387A3FB0",
         borderColor: "#387A3FB0",
       },
       {
-        label: "Number of invoices",
-        data: [15, 11, 30, 1, 31,40, 50, 32],
+        label: "Number of recived",
+        data: [15, 11, 30, 30, 31,40, 50, 32],
         tension: 0.4,
         backgroundColor: "#e28a52",
         borderColor: "#e28a52",
       },
       {
-        label: "Number of invoices",
-        data: [15, 11, 30, 1, 31,40, 50, 32].reverse(),
+        label: "Number of archive",
+        data: [15, 11, 30, 26, 31,40, 50, 32].reverse(),
         tension: 0.4,
         backgroundColor: "#23367c",
         borderColor: "#23367c",

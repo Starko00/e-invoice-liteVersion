@@ -15,6 +15,7 @@ function useRpc() {
   const [password, setPassword] = useState(null);
   const [searchData, setSearchData] = useState(null);
   const [invoiceSaveResponse, setInvoiceSaveResponse] = useState(false);
+
   useEffect(() => {
     axios
       .post(
@@ -33,7 +34,7 @@ function useRpc() {
         if (res.data?.error) {
           setData(res.data.error);
         } else {
-          navigate("/home");
+          // navigate("/home");
         }
       });
   }, []); // Cheks if the active session exists
@@ -163,7 +164,7 @@ function useRpc() {
     // },}) //Console log forwarded invoice object
     console.log(invoice, { steps });
     setLoading(true);
-    console.log(invoice)
+    console.log(invoice);
     axios
       .post("/json.rpc", {
         jsonrpc: "2.0",
@@ -180,6 +181,7 @@ function useRpc() {
         id: _id,
       })
       .then((res) => {
+        console.log(res);
         setInvoiceSaveResponse(res);
       })
       .finally(() => {
@@ -210,6 +212,56 @@ function useRpc() {
       });
   }; //Searching the buyer register and retruns the search resoults in SerchData
 
+  const getInvoicesFromPreparation = (skip = 0, take = 10) => {
+    setLoading(true);
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "Data.GetEntityData",
+        params: {
+          entity: "63f6c665-8e54-11ec-90f9-9536f254aa7f",
+          filter: '(Step < "85" or (Step="85" and StepStatus="Error"))',
+          orderBy: "DateTimeCreate desc",
+          select:
+            "StepStatus,id,InvNum,InvIssueDate,InvTypeCodeNameSC__CodeName,BuyerFormalName,BuyerCounCode,InvAmountInclVat,InvDueDate,DateTimeCreate",
+          format: "Full",
+          component: "6e145779-c13a-11ec-90fc-e6efeb8cfd2f",
+          extSwitchFieldValue: "*",
+          skip: skip,
+          take: take,
+          includeCount: true,
+        },
+        id: _id,
+      })
+      .then((res) => {
+        setData(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }; //Gets invoices from users history
+  const getOneInvoice = (id) => {
+    setLoading(true)
+    axios
+      .post("/json.rpc", {
+        jsonrpc: "2.0",
+        method: "EUeInvoices.AngularInitExt",
+        params: {
+          Id: id,
+          print: false,
+          fileresponse: null,
+          Destination: "IEI",
+        },
+        id: _id,
+      })
+      .then((res) => {
+        setData(res.data)
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return {
     data,
     loading,
@@ -223,6 +275,8 @@ function useRpc() {
     getInvoOwnerInfo,
     saveInvoice,
     searchBuyerRegister,
+    getInvoicesFromPreparation,
+    getOneInvoice,
   }; // returns necessary states, like data loading and error, others are functions
 }
 

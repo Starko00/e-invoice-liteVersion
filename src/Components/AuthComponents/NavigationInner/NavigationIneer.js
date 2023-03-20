@@ -33,7 +33,7 @@ export const NavigationInner = () => {
         <div
           className={style.menuItemHolder}
           onClick={() => {
-            navigate("bills");
+            navigate("invoices");
           }}
         >
           <div className={style.menuIconHolder}>

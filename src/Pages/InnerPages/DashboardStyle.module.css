@@ -18,7 +18,9 @@
   display: flex;
  align-items: flex-start;
  justify-content: center;
+ color: #23367c77;
 }
+
 
 
 @media (max-width: 1270px) {

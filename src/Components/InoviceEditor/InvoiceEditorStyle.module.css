@@ -10,6 +10,7 @@
   gap: 1rem;
   position: relative;
   min-height: 100%;
+  color: var(--fontMainColor);
 }
 .mainContainer input {
   font-family: inherit !important;

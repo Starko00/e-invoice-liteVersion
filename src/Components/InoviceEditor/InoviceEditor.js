@@ -138,12 +138,13 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
         Number(totalAmmountOfPDV) +
         Number(article.ItemNetPrice) *
           Number(article.Quantity) *
-          (Number(article.ItemVatCodeSC__VatCode) / 100);
+          (Number(article.Rate) / 100);
       setTotalAmmountOfPDV(pdvSum);
       return true;
     }); //Calculates the finall sum of the articles
   };
   useEffect(() => {
+    console.log(articles)
     calculateAll();
   }, [articles]); //Calls the callculation function when a new article has been added
 
@@ -155,8 +156,9 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
         Quantity: Number(Quantity),
         ItemNetPrice: Number(ItemNetPrice),
         UMCodeNameSC__Code,
-        ItemVatCodeSC__VatCode,
-        ItemVatCodeSC,
+        ...ItemVatCodeSC__VatCode,
+        // ItemVatCodeSC,
+        ItemVatCodeSC__VatCode: ItemVatCodeSC__VatCode.VatCode,
         ItemSellerIdent,
         LineExciseAmount,
         LineAllowPercent,
@@ -224,6 +226,177 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
     console.log("Invoice has miisng fields");
     return;
   }; //Alerts the user about the status of all required fields
+  const vatInvoice =[
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL30",
+        "VatCodeDesc": "(Oslobođeno) Posebna oslobođenja.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL30",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 30. Zakona o PDV-u. Posebna oslobođenja.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "1e4005ff-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Mali obveznici",
+        "VatCode": " ",
+        "VatCodeDesc": "Mali obveznici",
+        "VCCode_EN16931": "O",
+        "GroupUIVatCode": "Mali obveznici",
+        "GroupFiscVatCode": "MALIOBV",
+        "VERCode": null,
+        "VERDesc": "PDV nije obračunat (Mali obveznici - čl. 42. Zakona o PDV-u).",
+        "VCCode_EN16931__Name": "Services outside scope of tax ",
+        "Id": "2eae0907-715f-11ed-9102-c49e7815da59"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL26",
+        "VatCodeDesc": "(Oslobođeno) Oslobođenja od javnog interesa.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL26",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 26. Zakona o PDV-u. Oslobođenja od javnog interesa.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "07aa3972-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL27",
+        "VatCodeDesc": "(Oslobođeno) Ostala oslobođenja.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL27",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 27. Zakona o PDV-u. Ostala oslobođenja.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "0ff25cba-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL28",
+        "VatCodeDesc": "(Oslobođeno) Oslobođenja kod uvoza proizvoda.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL28",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 28. Zakona o PDV-u.Oslobođenja kod uvoza proizvoda.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "174c1571-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL29",
+        "VatCodeDesc": "(Oslobođeno) Oslobođenja kod privremenog uvoza proizvoda.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL29",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 29. Zakona o PDV-u. Oslobođenja kod privremenog uvoza proizvoda.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "1e4005fe-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL17",
+        "VatCodeDesc": "(Oslobođeno) Mjesto prometa usluga.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL17",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 17. st. 4. Zakona o PDV-u. Mjesto prometa usluga.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "3dec09b1-25a9-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 21,
+        "VatCodeUI": "Opšta - 21",
+        "VatCode": "21",
+        "VatCodeDesc": "Opšta stopa 21%",
+        "VCCode_EN16931": "S",
+        "GroupUIVatCode": "21",
+        "GroupFiscVatCode": "21.00",
+        "VERCode": null,
+        "VERDesc": null,
+        "VCCode_EN16931__Name": "Standard rate",
+        "Id": "3dec09b2-25a9-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 7,
+        "VatCodeUI": "Snižena - 7",
+        "VatCode": "7",
+        "VatCodeDesc": "Snižena stopa 7%",
+        "VCCode_EN16931": "S",
+        "GroupUIVatCode": "7",
+        "GroupFiscVatCode": "7.00",
+        "VERCode": null,
+        "VERDesc": null,
+        "VCCode_EN16931__Name": "Standard rate",
+        "Id": "3dec09b3-25a9-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Nulta - 0",
+        "VatCode": "0",
+        "VatCodeDesc": "(Oslobođeno) Nulta stopa.",
+        "VCCode_EN16931": "Z",
+        "GroupUIVatCode": "0",
+        "GroupFiscVatCode": "0.00",
+        "VERCode": null,
+        "VERDesc": null,
+        "VCCode_EN16931__Name": "Zero rated goods ",
+        "Id": "3dec09b4-25a9-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL44",
+        "VatCodeDesc": "(Oslobođeno) Usluge putničkih agencija.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL44",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 44. Zakona o PDV-u. Usluge putničkih agencija.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "3dec09b6-25a9-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Nulta - 0",
+        "VatCode": "0-Export",
+        "VatCodeDesc": "Oslobođen izvoz 0%",
+        "VCCode_EN16931": "Z",
+        "GroupUIVatCode": "0",
+        "GroupFiscVatCode": "0.00",
+        "VERCode": null,
+        "VERDesc": "Oslobođen izvoz 0%",
+        "VCCode_EN16931__Name": "Zero rated goods ",
+        "Id": "47cb4848-276e-11ec-8145-d2b2cff0e6ca"
+    },
+    {
+        "Rate": 0,
+        "VatCodeUI": "Izuzeće od PDV",
+        "VatCode": "VAT_CL20",
+        "VatCodeDesc": "(Oslobođeno) Poreska osnovica i ispravka poreske osnovice.",
+        "VCCode_EN16931": "E",
+        "GroupUIVatCode": "Izuzeće",
+        "GroupFiscVatCode": "VAT_CL20",
+        "VERCode": null,
+        "VERDesc": "Oslobođeno PDV-a prema čl. 20. Zakona o PDV-u. Poreska osnovica i ispravka poreske osnovice.",
+        "VCCode_EN16931__Name": "Exempt from Tax ",
+        "Id": "a6904ee2-276e-11ec-8145-d2b2cff0e6ca"
+    }
+]
   return (
     // Main invoice editors
     <div className={style.mainContainer}>
@@ -431,11 +604,11 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
                   <td>{article.Quantity}</td>
                   <td>{article.UMCodeNameSC__Code}</td>
                   <td>{article.ItemNetPrice}</td>
-                  <td>{article.ItemVatCodeSC__VatCode}</td>
+                  <td>{article.Rate}</td>
                   <td>
                     {Math.round(
                       (Number(article.ItemNetPrice) *
-                        Number(article.ItemVatCodeSC__VatCode)) /
+                        Number(article.Rate)) /
                         100 +
                         Number(article.ItemNetPrice)
                     )}
@@ -446,14 +619,14 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
                   <td>
                     {(Number(article.ItemNetPrice) *
                       Number(article.Quantity) *
-                      Number(article.ItemVatCodeSC__VatCode)) /
+                      Number(article.Rate)) /
                       100}
                   </td>
                   <td>
                     {Number(article.ItemNetPrice) * Number(article.Quantity) +
                       (Number(article.ItemNetPrice) *
                         Number(article.Quantity) *
-                        Number(article.ItemVatCodeSC__VatCode)) /
+                        Number(article.Rate)) /
                         100}
                     <BsFillXSquareFill
                       className={style.dropItemIcon}
@@ -510,10 +683,17 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
                   />
                 </td>
                 <td>
-                  <input
+                  {/* <input
                     type={"number"}
+                    placeholder="21"
                     onChange={(e) => setItemVatCodeSC__VatCode(e.target.value)}
-                  />
+                  /> */}
+                  <select onChange={(e)=> console.log(setItemVatCodeSC__VatCode(JSON.parse(e.target.value)))}>
+                    {vatInvoice.map(vatCode =>{
+                      return <option key={vatCode.Id} value={JSON.stringify( vatCode)}>{vatCode.Rate}, {vatCode.VatCodeDesc}</option>
+                    })}
+                  </select>
+                  
                 </td>
                 <td>
                   <button
@@ -655,7 +835,7 @@ export const InvoiceEditor = ({ props, resetInvoiceEditor }) => {
           )}
         </div>
       ) : (
-        "nothing"
+        ""
       )}
     </div>
   );

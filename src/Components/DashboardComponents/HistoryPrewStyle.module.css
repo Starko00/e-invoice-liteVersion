@@ -30,15 +30,27 @@
 .invoice p{
     display: flex;
     gap: 5px;
+    width: 100%;
     align-items: baseline;
     justify-content: baseline;
     position: relative;
+}
+.invoiceBuyerName{
+  min-width: 250px;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .status{
     width: 15px;
     height: 15px;
     border-radius: 9999rem;
     background-color: green;
+}
+.status[data-status="Error"]{
+  background-color: #b43738;
 }
 .invoice:hover{
     scale: 0.995;

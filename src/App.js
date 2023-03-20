@@ -9,7 +9,7 @@ import {
 import { HomePage } from "./Pages/HomePage";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, createContext } from "react";
-
+import { Invoices } from "./Pages/InnerPages/Invoices";
 import { InvoiceEditor } from "./Components/InoviceEditor/InoviceEditor";
 import { Dashboard } from "./Pages/InnerPages/Dashboard";
 import { ErrorPage } from "./Pages/ErrorPage";
@@ -39,11 +39,12 @@ function App() {
   return (
     <div className="App">
       <UserContext.Provider value={[user, setUser]}>
-        <Router  >
+        <Router>
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
             <Route exact path="/home" element={<HomePage />}>
               <Route index element={<Dashboard />} />
+              <Route path="invoices" element={<Invoices/>} />
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>

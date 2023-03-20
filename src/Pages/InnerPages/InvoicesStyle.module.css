@@ -1,0 +1,15 @@
+.itemName{
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+.status{
+    width: 15px;
+    height: 15px;
+    border-radius: 9999rem;
+    background-color: green;
+}
+.status[data-status="Error"]{
+  background-color: #b43738;
+}
